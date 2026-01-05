@@ -48,6 +48,11 @@ const useAdminForm = () => {
         fileInputRef.current?.click();
     };
 
+    const handleAddPorto=() => {
+        setSelected(null);
+        setOpenDetail(!openDetail);
+    }
+
     const onSubmit = handleSubmit(async (data: FormData) => {
         try {
             if(selected && selected.id){
@@ -59,7 +64,7 @@ const useAdminForm = () => {
             } else {
                 await postMutation.mutateAsync(payload);
             }
-            
+
             reset();
             refetch();
             setOpenDetail(false);
@@ -87,6 +92,7 @@ const useAdminForm = () => {
         handleDetail,
         handleCloseDetail,
         handleFileClick,
+        handleAddPorto
     };
 };
 

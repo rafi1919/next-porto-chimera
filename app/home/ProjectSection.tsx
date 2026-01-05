@@ -4,9 +4,17 @@ import { Icon } from "@iconify/react";
 import ProjectCard from "../components/ProjectCard";
 import {motion} from 'framer-motion';
 import { useRef } from "react";
+import HomeForm from "./hook/useHomeForm";
+
 export default function ProjectSection() {
   const cardRef = useRef(null);
-
+  const {
+    data,
+    isLoading,
+    isError
+  } = HomeForm();
+  console.log('data', data);
+  
   const dummyProjects=[
     {
       title: "Project One",

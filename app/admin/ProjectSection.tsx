@@ -1,6 +1,6 @@
 'use client';
 import Image from "next/image";
-import { Icon } from "@iconify/react";
+import { Icon} from "@iconify/react";
 import { motion } from "framer-motion";
 import useAdminForm from "./hooks/useAdminForm";
 
@@ -16,10 +16,17 @@ export default function ProjectSection() {
         handleDetail,
         handleCloseDetail,
         handleFileClick,
+        handleAddPorto
     } = useAdminForm();
 
     return (
-        <div className="relative">
+        <div className="relative w-full">
+              <div className="mx-auto flex justify-center items-center pt-10 gap-3">
+                <input type="search" placeholder="search by name" className="input-field"/>
+                <button className="border-2 border-white rounded p-3 cursor-pointer" onClick={handleAddPorto}>
+                    <Icon icon="mingcute:add-fill" className="text-[25px]  " />
+                </button>
+              </div>
             <div className="w-full px-6 grid grid-cols-3 gap-4 pt-7">
                 {data?.map((item, index) => (
                     <div key={index} className="w-full h-87 relative overflow-hidden rounded-lg cursor-pointer" onClick={() => handleDetail(item)}>
