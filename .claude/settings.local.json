@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm view:*)",
+      "Bash(npm i:*)",
+      "Bash(del \"e:\\\\coding\\\\serius ini\\\\porto-chimera\\\\next-porto-chimera\\\\utils\\\\debounce.ts\")"
+    ]
+  }
+}

@@ -1,17 +1,18 @@
 import {Icon }from "@iconify/react"
+import { Porto } from "../home/hook/HomeType"
+import Image from "next/image"
 
-interface BannerProps{
-    title: string,
-    description: string,
-      imageUrl: string,
-      link: string,
-      role:string,
-      stack: string[]
-}
-export default function ProjectCard({title, description, imageUrl, link, role, stack}:BannerProps) {
+
+export default function ProjectCard({id, title, description, image, link, role, stack = [],}:Porto) {
     return (
         <div className="border-t-2 flex gap-4 border-zinc-50 border-solid w-full h-[50vh] pt-4 bg-black">  
-            <div className="w-1/2 h-full bg-zinc-50 ">
+            <div className="w-1/2 h-full">
+            {image ?
+                <Image unoptimized src={image} alt={title} width={100} height={100}  className="w-full h-full object-cover"/>:
+                <div className="w-full h-full bg-[#171717] flex items-center justify-center text-zinc-50">
+                    <p>No image available</p>
+                </div>
+            }
 
             </div>
             <div className="w-1/2 h-full relative">

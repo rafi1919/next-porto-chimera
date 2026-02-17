@@ -5,21 +5,15 @@ import ProjectCard from "../components/ProjectCard";
 import {motion} from 'framer-motion';
 import { useRef } from "react";
 import HomeForm from "./hook/useHomeForm";
-
 export default function ProjectSection() {
   const cardRef = useRef(null);
-  const {
-    data,
-    isLoading,
-    isError
-  } = HomeForm();
-  console.log('data', data);
+  const {data, isFetching, isError} = HomeForm();
   
   const dummyProjects=[
     {
       title: "Project One",
       description: "This is a brief description of Project One.",
-      imageUrl: "/project-one.png",
+      image: "/project-one.png",
       link:"/#",
       role:'maintainer',
       stack:['Next.js','Tailwind CSS','TypeScript']
@@ -27,7 +21,7 @@ export default function ProjectSection() {
     {
       title: "Project Two",
       description: "This is a brief description of Project One.",
-      imageUrl: "/project-one.png",
+      image: "/project-one.png",
       link:"/#",
       role:'maintainer',
       stack:['React','TypeScript']
@@ -35,17 +29,22 @@ export default function ProjectSection() {
     {
       title: "Project Three",
       description: "This is a brief description of Project One.",
-      imageUrl: "/project-one.png",
+      image: "/project-one.png",
       link:"/#",
       role:'maintainer',
-      stack:['VUe','Laravel']
+      stack:['Vue','Laravel']
     }]
 
+    
+  const ProjectData =  data?.data
+    
+  if(isFetching) return <p>Loading...</p>;
+    
   return (
     
-    <div className="min-[300vh] relative bg-zinc-50 font-sans dark:bg-black p-4">
+    <div className="min-[300vh] relative font-sans bg-black p-4">
 
-        {dummyProjects.map((item, index)=>(
+        {ProjectData?.map((item, index)=>(
            <motion.div
             ref={cardRef}
             style={{
@@ -66,9 +65,10 @@ export default function ProjectSection() {
             )}
 
             <ProjectCard  
+              id={item.id}
               title={item.title} 
               description={item.description} 
-              imageUrl={item.imageUrl}
+              image={item.image}
               link={item.link}
               role={item.role}
               stack={item.stack} />

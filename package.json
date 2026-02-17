@@ -10,17 +10,19 @@
   },
   "dependencies": {
     "@tanstack/react-query": "^5.90.16",
-    "axios": "^1.13.2",
     "framer-motion": "^12.23.26",
+    "lodash.debounce": "^4.0.8",
     "next": "16.1.1",
     "react": "19.2.3",
-    "react-canvas-draw": "^1.2.1",
     "react-dom": "19.2.3",
-    "react-hook-form": "^7.69.0"
+    "react-hook-form": "^8.0.0-beta.1",
+    "sonner": "^2.0.7",
+    "use-debounce": "^10.1.0"
   },
   "devDependencies": {
     "@iconify/react": "^6.0.2",
     "@tailwindcss/postcss": "^4",
+    "@types/lodash.debounce": "^4.0.9",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",

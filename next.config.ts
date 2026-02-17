@@ -9,7 +9,13 @@ const nextConfig: NextConfig = {
         hostname: 'assets.awwwards.com',
         port: '',
         pathname: '/awards/media/cache/**',
-      }
+      },
+     {
+        protocol: 'http',
+        hostname: 'localhost',
+        port: '8000',
+        pathname: '/storage/**',
+      },
     ]
   }
 };

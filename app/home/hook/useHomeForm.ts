@@ -1,12 +1,13 @@
-import { getTop } from "./useHomeApi";
+import { GetTop } from "./useHomeApi";
 
 
 const HomeForm = () => {
-    const {data, isLoading, isError, refetch} =  getTop();
+    const {data, isFetching, isFetched, isError,} =  GetTop();
 
     return {
         data,
-        isLoading,
+        isFetching,
+        isFetched,
         isError
     }
 }
