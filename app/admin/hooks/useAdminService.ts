@@ -1,5 +1,5 @@
-const apiUrl = process.env.NEXT_PUBLIC_API_URL + '/' + process.env.NEXT_PUBLIC_API_VERSION; // or import.meta.env.VITE_API_URL
-import type {Content, ProjectFormData, ProjectParams} from "./AdminType";
+import { rootFetch } from '@/service/service';
+import type { Content, ProjectFormData, ProjectParams } from './AdminType';
 
 export const adminApi = {
   async get(params?: ProjectParams) {
@@ -7,65 +7,54 @@ export const adminApi = {
     if (params?.offset) query.append('offset', params.offset.toString());
     if (params?.limit) query.append('limit', params.limit.toString());
     if (params?.title) query.append('title', params.title);
-    
+
     const queryString = query.toString();
-    return fetch(`${apiUrl}/portos${queryString ? `?${queryString}` : ''}`);
+    return rootFetch(`/portos${queryString ? `?${queryString}` : ''}`);
   },
 
-  async post(formData:ProjectFormData ) {
-    return fetch(`${apiUrl}/portos`, {
+  async post(formData: ProjectFormData) {
+    return rootFetch('/portos', {
       method: 'POST',
-      headers:{
-        'Content-Type': 'application/json'
-      },
       body: JSON.stringify(formData),
- 
     });
   },
 
-  async put(id: string, formData: ProjectFormData ) {
-    return fetch(`${apiUrl}/portos/${id}`, {
+  async put(id: string, formData: ProjectFormData) {
+    return rootFetch(`/portos/${id}`, {
       method: 'PUT',
       body: JSON.stringify(formData),
-      headers:{
-        'Content-Type': 'application/json'
-      }
+    });
+  },
+
+  async delete(id: string) {
+    return rootFetch(`/portos/${id}`, {
+      method: 'DELETE',
     });
   },
 };
 
 export const contentApi = {
-  async get() {  
-    return fetch(`${apiUrl}/contents`);
+  async get() {
+    return rootFetch('/contents');
   },
 
-  async post(formData:Content ) {
-    return fetch(`${apiUrl}/contents`, {
+  async post(formData: Content) {
+    return rootFetch('/contents', {
       method: 'POST',
-      headers:{
-        'Content-Type': 'application/json'
-      },
       body: JSON.stringify(formData),
- 
     });
   },
 
-  async put(id: string, formData: Content ) {
-    return fetch(`${apiUrl}/contents/${id}`, {
+  async put(id: string, formData: Content) {
+    return rootFetch(`/contents/${id}`, {
       method: 'PUT',
       body: JSON.stringify(formData),
-      headers:{
-        'Content-Type': 'application/json'
-      }
     });
   },
 
   async delete(id: string) {
-    return fetch(`${apiUrl}/contents/${id}`, {
+    return rootFetch(`/contents/${id}`, {
       method: 'DELETE',
-      headers:{
-        'Content-Type': 'application/json'
-      }
     });
   },
 };

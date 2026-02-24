@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { Icon} from "@iconify/react";
 import useProjectForm from "./hook/useProjectForm";
+import { DeleteProjects } from "../../hooks/useAdminApi";
 import { PortoCard } from "../../components/PortoCard";
 import { BottomDialog } from "../../components/BottomDialog";
 import noImage from  "@/public/no-data.svg"
@@ -10,6 +11,8 @@ import EmptyDisplay from "../../components/EmptyDisplay";
 import Pagination from "../../components/Pagination";
 
 export default function ProjectSection() {
+    const { mutate: deleteProject } = DeleteProjects();
+
     const {
         projectData,
         meta,
@@ -42,6 +45,10 @@ export default function ProjectSection() {
     if( isFetching) {
         return <p className="text-center text-zinc-50 mt-10">Loading...</p>
     }
+
+    if(!meta){
+        return <p className="text-center text-zinc-50 mt-10">No data available.</p>
+    }
     
     return (
         <div className="relative w-full">
@@ -60,17 +67,14 @@ export default function ProjectSection() {
 
              
             <div className="w-full px-6 grid grid-cols-3 gap-4 pt-7">
-                {meta.total === 0 && !isFetching &&
-                  <EmptyDisplay imagePath={noImage.src} title="Data tidak ada" message="Tidak ada data yang tersedia saat ini."/>
-                }
 
-                {meta.filtered_total > 0 ? (
+                {meta.filtered_total > 0 && !isFetching  ? (
                     projectData.map((item, index) => (
-                        <PortoCard key={index} item={item} onClick={() => handleDetail(item)} />
+                        <PortoCard key={index} item={item} onClick={() => handleDetail(item)} onDelete={(e) => { e.stopPropagation(); deleteProject(item.id); }} />
                     ))
                 ) : (
                     <div className="col-span-3">
-                        <EmptyDisplay imagePath={noImage.src} title="Data tidak ada" message="TCoba cari kata kunci yang lain"/>
+                        <EmptyDisplay imagePath={noImage.src} title="Data tidak ada" message={meta.total === 0 ? "Tidak ada data yang tersedia saat ini.": "Coba cari kata kunci yang lain"}/>
                     </div>
                 )}
             </div>

@@ -1,5 +1,6 @@
 import { QueryClient, useMutation } from "@tanstack/react-query"
 import { loginService } from "./useApiService";
+import { setToken } from "@/service/service";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 
@@ -15,14 +16,14 @@ export const Login = ()=>{
 
             const res = await loginService.login(formData);
             const response = await res.json();
-
             if(!res.ok){
                 throw response;
             }
 
             return response;
         },
-        onSuccess:()=>{
+        onSuccess:(response)=>{
+            setToken(response.token);
             toast.success('Login successful');
             document.cookie = "isAuth=true; path=/; max-age=3600";
             router.push('/admin');

@@ -2,8 +2,7 @@
 import React, { useState, lazy, Suspense } from "react"; 
 import { AnimatePresence, motion } from "framer-motion";
 import ButtonNav from "../components/ButtonNav";
-
-const ProjectSection = lazy(() => import("./sections/project/ProjectSection"));
+import ProjectSection from "./sections/project/ProjectSection";
 const StackSection = lazy(() => import("./sections/stack/StackSection"));
 const ContentSection = lazy(() => import("./sections/content/ContentSection"));
 const ProfileSection = lazy(() => import("./sections/profile/ProfileSection"));

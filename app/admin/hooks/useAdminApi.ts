@@ -1,6 +1,7 @@
 import { useQuery, useQueryClient, useMutation} from "@tanstack/react-query";
 import { ProjectFormData, ProjectResponse, ProjectParams, Content } from "./AdminType";
 import { adminApi, contentApi } from "./useAdminService";
+import { rootFetch } from "@/service/service";
 import { toast } from "sonner";
 
 export const GetProjects = (params?: ProjectParams) => {
@@ -139,6 +140,32 @@ export const PostContents=()=> {
     })
 }
 
+export const DeleteProjects = () => {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: async (id: string) => {
+            const res = await adminApi.delete(id);
+            const response = await res.json();
+
+            if (!response.success) {
+                const error = response.message || 'Failed to delete project';
+                throw new Error(error);
+            }
+
+            return response;
+        },
+        onSuccess: () => {
+            toast.success('Project deleted successfully');
+            queryClient.invalidateQueries({ queryKey: ['projects'] });
+        },
+        onError: (error: { message: string }) => {
+            toast.error(`Error deleting project: ${error.message}`);
+        },
+    });
+};
+
+
 export const DeleteContents=()=> {
     const queryClient = useQueryClient();
 
@@ -167,8 +194,8 @@ export const DeleteContents=()=> {
 export const UploadImage = async (file: File): Promise<string> => {
     const formData = new FormData();
     formData.append('image', file);
-        
-    const res = await fetch('/api/upload', {
+
+    const res = await rootFetch('/upload-image', {
         method: 'POST',
         body: formData,
     });
@@ -176,7 +203,7 @@ export const UploadImage = async (file: File): Promise<string> => {
     if (!res.ok) {
         throw new Error('Failed to upload image');
     }
-    
+
     const data = await res.json();
     return data.data;
 }

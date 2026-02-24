@@ -1,14 +1,11 @@
-const apiUrl = process.env.NEXT_PUBLIC_API_URL + '/' + process.env.NEXT_PUBLIC_API_VERSION; // or import.meta.env.VITE_API_URL
-
+import { rootFetch } from '@/service/service';
 
 export const homeApi = {
   async getTop() {
-    return fetch(`${apiUrl}/top-porto`);
+    return rootFetch('/top-porto');
   },
 
-   async getContent() {
-    return fetch(`${apiUrl}/contents`);
+  async getLandingContent() {
+    return rootFetch('/landing-content');
   },
-
-
 };

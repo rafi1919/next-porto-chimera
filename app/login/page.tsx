@@ -14,13 +14,13 @@ export default function LoginPage() {
                              <label className="block text-sm font-medium text-purple-100 mb-2">
                                 Username
                             </label>
-                            <input className="input-field" {...register("username")} disabled={isSubmitting} />
+                            <input required className="input-field" {...register("username")} disabled={isSubmitting} />
                         </div>
                         <div className="w-full">
                              <label className="block text-sm font-medium text-purple-100 mb-2">
                                 Password
                             </label >
-                            <input className="input-field" type="password" {...register("password")} disabled={isSubmitting} />
+                            <input required className="input-field" type="password" {...register("password")} disabled={isSubmitting} />
                         </div>
                         <Button text="Login" isLoading={isSubmitting} />
                     </div>

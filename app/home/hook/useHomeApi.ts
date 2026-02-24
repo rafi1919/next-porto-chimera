@@ -20,13 +20,14 @@ export const GetTop=(
     })
 }
 
-export const useGetContent=(
+
+export const useGetLandingContent=(
     options?:Omit<UseQueryOptions<ContentData>, 'queryKey' | 'queryFn' >
 )=>{
     return useQuery<ContentData>({
-        queryKey:['getContent'],
+        queryKey:['getLandingContent'],
         queryFn: async()=>{
-            const res = await homeApi.getContent();
+            const res = await homeApi.getLandingContent();
             const data = await res.json();
             return data;
         },

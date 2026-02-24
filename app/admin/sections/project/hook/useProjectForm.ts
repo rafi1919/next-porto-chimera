@@ -104,8 +104,8 @@ const useProjectForm = () => {
 
     return {
         // Data
-        projectData: isFetching ? [] : data.data || [],
-        meta: isFetching ? [] : data.meta || [],
+        projectData: isFetching ? [] : data?.data || [],
+        meta: data?.meta,
         isFetching,
         isError,
         selectedFile,
