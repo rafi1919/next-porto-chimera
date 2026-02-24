@@ -1,40 +1,38 @@
-import { useQuery, UseQueryOptions,  } from "@tanstack/react-query"
+import { useQuery, UseQueryOptions } from "@tanstack/react-query"
 import { homeApi } from "./useHomeService";
 import { ContentData, ProjectData } from "./HomeType";
 
-export const GetTop=(
-    options?:Omit<UseQueryOptions<ProjectData>, 'queryKey' | 'queryFn' >
-)=>{
+const sharedOptions = {
+    staleTime: 1000 * 60 * 5,
+    gcTime: 1000 * 60 * 5,
+    refetchOnMount: true,
+    refetchOnWindowFocus: false,
+} as const;
+
+export const useGetTop = (
+    options?: Omit<UseQueryOptions<ProjectData>, 'queryKey' | 'queryFn'>
+) => {
     return useQuery<ProjectData>({
-        queryKey:['getTop'],
-        queryFn: async()=>{
+        queryKey: ['getTop'],
+        queryFn: async () => {
             const res = await homeApi.getTop();
-            const data = await res.json();
-            return data;
+            return res.json();
         },
-        staleTime: 1000 * 60 * 5, // 5 minutes,
-        gcTime: 0,
-        refetchOnMount: true,
-        refetchOnWindowFocus: false,
-        ...options  
-    })
-}
+        ...sharedOptions,
+        ...options,
+    });
+};
 
-
-export const useGetLandingContent=(
-    options?:Omit<UseQueryOptions<ContentData>, 'queryKey' | 'queryFn' >
-)=>{
+export const useGetLandingContent = (
+    options?: Omit<UseQueryOptions<ContentData>, 'queryKey' | 'queryFn'>
+) => {
     return useQuery<ContentData>({
-        queryKey:['getLandingContent'],
-        queryFn: async()=>{
+        queryKey: ['getLandingContent'],
+        queryFn: async () => {
             const res = await homeApi.getLandingContent();
-            const data = await res.json();
-            return data;
+            return res.json();
         },
-        staleTime: 1000 * 60 * 5, // 5 minutes,
-        gcTime: 0,
-        refetchOnMount: true,
-        refetchOnWindowFocus: false,
-        ...options  
-    })
-}
+        ...sharedOptions,
+        ...options,
+    });
+};

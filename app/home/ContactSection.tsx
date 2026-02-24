@@ -4,11 +4,10 @@ import { motion } from 'framer-motion';
 import { Icon } from '@iconify/react';
 
 export default function ContactSection() {
-  const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
 
   const handleSubmit = () => {
-    console.log('Form submitted:', { email, message });
+    console.log('Form submitted:', { message });
     // Handle form submission
   };
 
@@ -83,8 +82,8 @@ export default function ContactSection() {
 
               </div>
               <div className='mt-3 flex justify-between items-center gap-2'>
-                <input type='text' id='message' className='input-field w-full'/>
-              <button className='bg-[#222222] cursor-pointer p-4 rounded text-zinc-50'><Icon icon="streamline-sharp:mail-send-email-message" /></button>
+                <input type='text' id='message' className='input-field w-full' value={message} onChange={(e) => setMessage(e.target.value)} />
+              <button onClick={handleSubmit} className='bg-[#222222] cursor-pointer p-4 rounded text-zinc-50'><Icon icon="streamline-sharp:mail-send-email-message" /></button>
               </div>
 
             </div>
@@ -105,7 +104,7 @@ export default function ContactSection() {
             <div className="space-y-6">
               {socialLinks.map((link, index) => (
                 <motion.a
-                  key={index}
+                  key={link.name}
                   href={link.href}
                   target={link.name !== 'Phone' ? '_blank' : undefined}
                   rel={link.name !== 'Phone' ? 'noopener noreferrer' : undefined}

@@ -4,6 +4,10 @@ import { adminApi, contentApi } from "./useAdminService";
 import { rootFetch } from "@/service/service";
 import { toast } from "sonner";
 
+const sharedOptions ={
+    staleTime: 1000 * 60 * 5,
+    refetchOnWindowFocus: false,
+}
 export const GetPortos = (params?: PortoParams) => {
   return useQuery<PortoResponse>({
     queryKey: ['portos', params],
@@ -12,8 +16,7 @@ export const GetPortos = (params?: PortoParams) => {
       if (!res.ok) throw new Error('Failed to fetch portos');
       return res.json();
     },
-    staleTime: 1000 * 60 * 5,
-    refetchOnWindowFocus: false,
+    ...sharedOptions
   });
 };
 
@@ -102,8 +105,7 @@ export const GetContent = () => {
       if (!res.ok) throw new Error('Failed to fetch contents');
       return res.json();
     },
-    staleTime: 1000 * 60 * 5,
-    refetchOnWindowFocus: false,
+    ...sharedOptions
   });
 };
 

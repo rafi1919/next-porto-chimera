@@ -3,7 +3,7 @@ import { useGetLandingContent } from "./hook/useHomeApi";
 
 export default function BannerSection() {
   const { data, isFetching, error } = useGetLandingContent();
-  const content =data? data?.data.find((item)=> item.category === 'banner') : null;
+  const content = data?.data.find((item) => item.category === 'banner');
   
   return (
     <div className="relative flex items-center justify-center min-h-screen  font-sans bg-black p-4 gap-6">
