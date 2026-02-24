@@ -46,13 +46,11 @@ const useContentForm = () => {
     }
 
     const handleDelete = async (id: number) => {
-        if (confirm('Are you sure you want to delete this content?')) {
-            try {
-                await deleteMutation.mutateAsync(id);
-                refetch();
-            } catch (error) {
-                console.error('Error deleting content:', error);
-            }
+        try {
+            await deleteMutation.mutateAsync(id);
+            refetch();
+        } catch (error) {
+            console.error('Error deleting content:', error);
         }
     };
 

@@ -1,13 +1,17 @@
 'use client';
 
+import { useState } from "react";
 import { Icon } from "@iconify/react";
 import useContentForm from "./hook/useContentForm";
+import { ConfirmDeleteDialog } from "@/app/components/DIalog/ConfirmDeleteDialog";
 import { BottomDialog } from "../../components/BottomDialog";
 import EmptyDisplay from "../../components/EmptyDisplay";
 import noImage from "@/public/no-data.svg";
 import type { Content } from "../../hooks/AdminType";
 
 export default function ContentSection() {
+    const [deleteTarget, setDeleteTarget] = useState<number | null>(null);
+
     const {
         contentData,
         isLoading,
@@ -79,11 +83,11 @@ export default function ContentSection() {
                                     <button
                                         onClick={(e) => {
                                             e.stopPropagation();
-                                            handleDelete(item.id);
+                                            setDeleteTarget(item.id);
                                         }}
                                         className="ml-4 text-red-500 hover:text-red-700 transition-colors"
                                     >
-                                        <Icon icon="mingcute:delete-2-fill" className="text-[24px]" />
+                                        <Icon icon="mdi:trash" className="text-[24px]" />
                                     </button>
                                 </div>
                             </div>
@@ -100,8 +104,15 @@ export default function ContentSection() {
                 )}
             </div>
 
-            {openDetail && (
-                <BottomDialog openDetail={openDetail} handleCloseDetail={handleCloseDetail}>
+            <ConfirmDeleteDialog
+                isOpen={deleteTarget !== null}
+                onCancel={() => setDeleteTarget(null)}
+                onConfirm={() => { handleDelete(deleteTarget!); setDeleteTarget(null); }}
+                title="Delete Content"
+                message="Are you sure you want to delete this content? This action cannot be undone."
+            />
+
+            <BottomDialog openDetail={openDetail} handleCloseDetail={handleCloseDetail}>
                     <form onSubmit={onSubmit} className="w-full max-w-2xl mx-auto space-y-4">
                         <h2 className="text-2xl font-bold text-gray-800 mb-4">
                             {selected ? 'Edit Content' : 'Add New Content'}
@@ -145,7 +156,6 @@ export default function ContentSection() {
                         </button>
                     </form>
                 </BottomDialog>
-            )}
         </div>
     );
 }

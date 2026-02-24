@@ -2,7 +2,7 @@
 import React, { useState, lazy, Suspense } from "react"; 
 import { AnimatePresence, motion } from "framer-motion";
 import ButtonNav from "../components/ButtonNav";
-import ProjectSection from "./sections/project/ProjectSection";
+import PortoSection from "./sections/porto/PortoSection";
 const StackSection = lazy(() => import("./sections/stack/StackSection"));
 const ContentSection = lazy(() => import("./sections/content/ContentSection"));
 const ProfileSection = lazy(() => import("./sections/profile/ProfileSection"));
@@ -11,13 +11,13 @@ export default function Admin() {
   const [selected, setSelected] = useState(0)
 
   const navList=[
-    {name:"Project"},
+    {name:"Porto"},
     {name:"Stack"},
     {name:"Content"},
     {name:"Profile"},
   ]
 
-  const components = [ProjectSection, StackSection, ContentSection, ProfileSection];
+  const components = [PortoSection, StackSection, ContentSection, ProfileSection];
 
   return (
     <div className="min-h-screen font-sans bg-black overflow-hidden">

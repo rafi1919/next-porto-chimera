@@ -9,33 +9,6 @@ export default function ProjectSection() {
   const cardRef = useRef(null);
   const {data, isFetching, isError} = HomeForm();
   
-  const dummyProjects=[
-    {
-      title: "Project One",
-      description: "This is a brief description of Project One.",
-      image: "/project-one.png",
-      link:"/#",
-      role:'maintainer',
-      stack:['Next.js','Tailwind CSS','TypeScript']
-    },
-    {
-      title: "Project Two",
-      description: "This is a brief description of Project One.",
-      image: "/project-one.png",
-      link:"/#",
-      role:'maintainer',
-      stack:['React','TypeScript']
-    },
-    {
-      title: "Project Three",
-      description: "This is a brief description of Project One.",
-      image: "/project-one.png",
-      link:"/#",
-      role:'maintainer',
-      stack:['Vue','Laravel']
-    }]
-
-    
   const ProjectData =  data?.data
     
   if(isFetching) return <p>Loading...</p>;

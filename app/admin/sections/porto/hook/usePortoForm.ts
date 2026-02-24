@@ -1,31 +1,32 @@
 'use client';
 
-import { PostProjects, PutProjects, UploadImage, GetProjects } from "../../../hooks/useAdminApi";
+import { PostPortos, PutPortos, UploadImage, GetPortos } from "../../../hooks/useAdminApi";
 import { useForm } from "react-hook-form";
 import { useState, useRef, useEffect } from "react";
 import { useDebounce } from "use-debounce";
-import type { PortoProps, ProjectFormData, } from "../../../hooks/AdminType";
+import type { PortoProps, PortoFormData } from "../../../hooks/AdminType";
 
-const useProjectForm = () => {
+const usePortoForm = () => {
     const [inputValue, setInputValue] = useState<string>('');
     const [debouncedSearch] = useDebounce(inputValue, 500);
     const [page, setPage] = useState<number>(1);
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-    const { data, isFetching, isError, refetch } = GetProjects({
+    const { data, isFetching, isError, refetch } = GetPortos({
         title: debouncedSearch || undefined,
-        offset:page,
+        offset: page,
         limit: 12
     });
-    const putMutation = PutProjects();
-    const postMutation = PostProjects();
-    
+    const putMutation = PutPortos();
+    const postMutation = PostPortos();
+
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const [selected, setSelected] = useState<PortoProps | null>(null);
     const [openDetail, setOpenDetail] = useState<boolean>(false);
-    
+
     const fileInputRef = useRef<HTMLInputElement>(null);
-    
-    const { register, handleSubmit, reset, watch, setValue, formState: { errors },  } = useForm<ProjectFormData>({ defaultValues: { is_active: false } });
+
+    const { register, handleSubmit, reset, watch, setValue, formState: { errors } } = useForm<PortoFormData>({ defaultValues: { is_active: false } });
+
     const handleSearch = (title: string) => {
         setInputValue(title);
         setPage(1);
@@ -42,7 +43,7 @@ const useProjectForm = () => {
         });
     }, [selected, reset]);
 
-    const handleDetail = (data: PortoProps) => {        
+    const handleDetail = (data: PortoProps) => {
         setSelected(data);
         setOpenDetail(true);
     };
@@ -58,7 +59,7 @@ const useProjectForm = () => {
         setSelectedFile(e.target.files?.[0] || null);
     };
 
-    const handleAddPorto=() => {
+    const handleAddPorto = () => {
         setSelected(null);
         setOpenDetail(!openDetail);
     }
@@ -67,25 +68,26 @@ const useProjectForm = () => {
         setPage(newPage);
     };
 
-    const uploadImage =async()=>{
+    const uploadImage = async () => {
         const res = await UploadImage(selectedFile!);
         return res;
     }
-    const onSubmit = handleSubmit(async (data: ProjectFormData) => {
+
+    const onSubmit = handleSubmit(async (data: PortoFormData) => {
         setIsSubmitting(true);
         try {
             let imageUrl;
-            
-            if(selectedFile){
+
+            if (selectedFile) {
                 imageUrl = await uploadImage();
             }
 
-            const payload = { 
-                ...data, 
+            const payload = {
+                ...data,
                 image: imageUrl,
-                ...(selected?.id && {id: selected.id})
-             };
-             
+                ...(selected?.id && { id: selected.id })
+            };
+
             if (selected && selected.id) {
                 await putMutation.mutateAsync(payload);
             } else {
@@ -95,23 +97,23 @@ const useProjectForm = () => {
             reset();
             refetch();
             setOpenDetail(false);
-            setIsSubmitting(false)
+            setIsSubmitting(false);
         } catch (error) {
             console.error('Error:', error);
-            setIsSubmitting(false)
+            setIsSubmitting(false);
         }
     });
 
     return {
         // Data
-        projectData: isFetching ? [] : data?.data || [],
+        portoData: isFetching ? [] : data?.data || [],
         meta: data?.meta,
         isFetching,
         isError,
         selectedFile,
         search: inputValue,
         page,
-        
+
         // Form
         register,
         watch,
@@ -119,12 +121,12 @@ const useProjectForm = () => {
         onSubmit,
         errors,
         isSubmitting,
-        
+
         // UI State
         openDetail,
         selected,
         fileInputRef,
-        
+
         // Handlers
         handleDetail,
         handleCloseDetail,
@@ -135,4 +137,4 @@ const useProjectForm = () => {
     };
 };
 
-export default useProjectForm;
+export default usePortoForm;

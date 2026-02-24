@@ -1,15 +1,15 @@
 import { useQuery, useQueryClient, useMutation} from "@tanstack/react-query";
-import { ProjectFormData, ProjectResponse, ProjectParams, Content } from "./AdminType";
+import { PortoFormData, PortoResponse, PortoParams, Content } from "./AdminType";
 import { adminApi, contentApi } from "./useAdminService";
 import { rootFetch } from "@/service/service";
 import { toast } from "sonner";
 
-export const GetProjects = (params?: ProjectParams) => {
-  return useQuery<ProjectResponse>({
-    queryKey: ['projects', params],
+export const GetPortos = (params?: PortoParams) => {
+  return useQuery<PortoResponse>({
+    queryKey: ['portos', params],
     queryFn: async () => {
       const res = await adminApi.get(params);
-      if (!res.ok) throw new Error('Failed to fetch projects');
+      if (!res.ok) throw new Error('Failed to fetch portos');
       return res.json();
     },
     staleTime: 1000 * 60 * 5,
@@ -18,59 +18,81 @@ export const GetProjects = (params?: ProjectParams) => {
 };
 
 
-export const PutProjects=()=> {
+export const PutPortos = () => {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn:async (data: ProjectFormData)=> {
-            
+        mutationFn: async (data: PortoFormData) => {
             const res = await adminApi.put(data.id, data);
             const response = await res.json()
-            
-            if (!response.success) {                
-                const error = response.message || 'Failed to create project';
+
+            if (!response.success) {
+                const error = response.message || 'Failed to update porto';
                 throw new Error(error);
             }
 
             return response
         },
-        onSuccess:()=>{
-            toast.success('Project updated successfully');
-            queryClient.invalidateQueries({ queryKey: ['projects']});
+        onSuccess: () => {
+            toast.success('Porto updated successfully');
+            queryClient.invalidateQueries({ queryKey: ['portos']});
         },
-
         onError: (error: { message: string }) => {
-            toast.error(`Error updating project: ${error.message}`);
+            toast.error(`Error updating porto: ${error.message}`);
         }
     })
 }
 
 
-export const PostProjects=()=> {
+export const PostPortos = () => {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn:async (data: ProjectFormData)=> {
-        
+        mutationFn: async (data: PortoFormData) => {
             const res = await adminApi.post(data);
             const response = await res.json()
-            
-            if (!response.success) {                
-                const error = response.message || 'Failed to create project';
+
+            if (!response.success) {
+                const error = response.message || 'Failed to create porto';
                 throw new Error(error);
             }
 
             return response
         },
-        onSuccess:()=>{
-            toast.success('Project created successfully');
-            queryClient.invalidateQueries({ queryKey: ['projects']});
+        onSuccess: () => {
+            toast.success('Porto created successfully');
+            queryClient.invalidateQueries({ queryKey: ['portos']});
         },
         onError: (error: { message: string }) => {
-            toast.error(`Error creating project: ${error.message}`);
+            toast.error(`Error creating porto: ${error.message}`);
         },
     })
 }
+
+export const DeletePortos = () => {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: async (id: string) => {
+            const res = await adminApi.delete(id);
+            const response = await res.json();
+
+            if (!response.success) {
+                const error = response.message || 'Failed to delete porto';
+                throw new Error(error);
+            }
+
+            return response;
+        },
+        onSuccess: () => {
+            toast.success('Porto deleted successfully');
+            queryClient.invalidateQueries({ queryKey: ['portos'] });
+        },
+        onError: (error: { message: string }) => {
+            toast.error(`Error deleting porto: ${error.message}`);
+        },
+    });
+};
 
 export const GetContent = () => {
   return useQuery({
@@ -86,27 +108,25 @@ export const GetContent = () => {
 };
 
 
-export const PutContents=()=> {
+export const PutContents = () => {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn:async (data: Content)=> {
-            
+        mutationFn: async (data: Content) => {
             const res = await contentApi.put(data.id.toString(), data);
             const response = await res.json()
-            
-            if (!response.success) {                
+
+            if (!response.success) {
                 const error = response.message || 'Failed to update content';
                 throw new Error(error);
             }
 
             return response
         },
-        onSuccess:()=>{
+        onSuccess: () => {
             toast.success('Content updated successfully');
             queryClient.invalidateQueries({ queryKey: ['contents']});
         },
-
         onError: (error: { message: string }) => {
             toast.error(`Error updating content: ${error.message}`);
         }
@@ -114,23 +134,22 @@ export const PutContents=()=> {
 }
 
 
-export const PostContents=()=> {
+export const PostContents = () => {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn:async (data: Content)=> {
-        
+        mutationFn: async (data: Content) => {
             const res = await contentApi.post(data);
             const response = await res.json()
-            
-            if (!response.success) {                
+
+            if (!response.success) {
                 const error = response.message || 'Failed to create content';
                 throw new Error(error);
             }
 
             return response
         },
-        onSuccess:()=>{
+        onSuccess: () => {
             toast.success('Content created successfully');
             queryClient.invalidateQueries({ queryKey: ['contents']});
         },
@@ -140,48 +159,22 @@ export const PostContents=()=> {
     })
 }
 
-export const DeleteProjects = () => {
+export const DeleteContents = () => {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: async (id: string) => {
-            const res = await adminApi.delete(id);
-            const response = await res.json();
-
-            if (!response.success) {
-                const error = response.message || 'Failed to delete project';
-                throw new Error(error);
-            }
-
-            return response;
-        },
-        onSuccess: () => {
-            toast.success('Project deleted successfully');
-            queryClient.invalidateQueries({ queryKey: ['projects'] });
-        },
-        onError: (error: { message: string }) => {
-            toast.error(`Error deleting project: ${error.message}`);
-        },
-    });
-};
-
-
-export const DeleteContents=()=> {
-    const queryClient = useQueryClient();
-
-    return useMutation({
-        mutationFn:async (id: number)=> {
+        mutationFn: async (id: number) => {
             const res = await contentApi.delete(id.toString());
             const response = await res.json()
-            
-            if (!response.success) {                
+
+            if (!response.success) {
                 const error = response.message || 'Failed to delete content';
                 throw new Error(error);
             }
 
             return response
         },
-        onSuccess:()=>{
+        onSuccess: () => {
             toast.success('Content deleted successfully');
             queryClient.invalidateQueries({ queryKey: ['contents']});
         },

@@ -8,7 +8,7 @@ export interface PortoProps {
     is_active: boolean;
 }
 
-export interface ProjectFormData {
+export interface PortoFormData {
     title: string;
     role: string;
     description: string;
@@ -18,7 +18,7 @@ export interface ProjectFormData {
     is_active: boolean;
 }
 
-export interface ProjectParams{
+export interface PortoParams{
     page?: number;
     title?: string;
     limit?: number;
@@ -26,7 +26,7 @@ export interface ProjectParams{
     offset?: number;
 }
 
-export interface ProjectResponse{
+export interface PortoResponse{
     data: PortoProps[];
     meta: PaginationMeta;
 }

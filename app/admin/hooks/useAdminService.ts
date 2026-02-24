@@ -1,8 +1,8 @@
 import { rootFetch } from '@/service/service';
-import type { Content, ProjectFormData, ProjectParams } from './AdminType';
+import type { Content, PortoFormData, PortoParams } from './AdminType';
 
 export const adminApi = {
-  async get(params?: ProjectParams) {
+  async get(params?: PortoParams) {
     const query = new URLSearchParams();
     if (params?.offset) query.append('offset', params.offset.toString());
     if (params?.limit) query.append('limit', params.limit.toString());
@@ -12,14 +12,14 @@ export const adminApi = {
     return rootFetch(`/portos${queryString ? `?${queryString}` : ''}`);
   },
 
-  async post(formData: ProjectFormData) {
+  async post(formData: PortoFormData) {
     return rootFetch('/portos', {
       method: 'POST',
       body: JSON.stringify(formData),
     });
   },
 
-  async put(id: string, formData: ProjectFormData) {
+  async put(id: string, formData: PortoFormData) {
     return rootFetch(`/portos/${id}`, {
       method: 'PUT',
       body: JSON.stringify(formData),
