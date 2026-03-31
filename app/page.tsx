@@ -1,15 +1,13 @@
-import AboutSection from "./home/AboutSection";
-import BannerSection from "./home/BannerSection";
-import ContactSection from "./home/ContactSection";
-import ProjectSection from "./home/ProjectSection";
+import versions, { VersionKey } from './home/versions';
+
+const APP_VERSION = (process.env.NEXT_PUBLIC_APP_VERSION ?? 'VerZero') as VersionKey;
 
 export default function Home() {
+  const Version = versions[APP_VERSION] ?? versions.VerZero;
+
   return (
     <main>
-      <BannerSection />
-      <AboutSection />
-      <ProjectSection />
-      <ContactSection />
+      <Version />
     </main>
   );
 }

@@ -109,7 +109,6 @@ export const GetContent = () => {
   });
 };
 
-
 export const PutContents = () => {
     const queryClient = useQueryClient();
 
@@ -134,7 +133,6 @@ export const PutContents = () => {
         }
     })
 }
-
 
 export const PostContents = () => {
     const queryClient = useQueryClient();

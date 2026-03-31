@@ -1,9 +1,9 @@
 'use client';
 
 import { Icon } from "@iconify/react";
-import ProjectCard from "../components/ProjectCard";
+import ProjectCard from "../../components/ProjectCard";
 import { motion } from 'framer-motion';
-import { useGetTop } from "./hook/useHomeApi";
+import { useGetTop } from "../hook/useHomeApi";
 
 export default function ProjectSection() {
   const { data, isFetching } = useGetTop();

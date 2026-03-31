@@ -1,5 +1,5 @@
 'use client';
-import { useGetLandingContent } from "./hook/useHomeApi";
+import { useGetLandingContent } from "../hook/useHomeApi";
 
 export default function BannerSection() {
   const { data, isFetching, error } = useGetLandingContent();
