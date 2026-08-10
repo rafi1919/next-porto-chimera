@@ -1,13 +1,11 @@
-import versions, { VersionKey } from './home/versions';
+import Home from "./home";
 
-const APP_VERSION = (process.env.NEXT_PUBLIC_APP_VERSION ?? 'VerZero') as VersionKey;
 
-export default function Home() {
-  const Version = versions[APP_VERSION] ?? versions.VerZero;
+export default function Index() {
 
   return (
     <main>
-      <Version />
+      <Home />
     </main>
   );
 }
