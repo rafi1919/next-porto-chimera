@@ -17,7 +17,7 @@ export default function DateCounter() {
 
     return (
         <div className="text-7xl font-bold text-diamond-900"> 
-            {date.getMonth()} {date.getDate()}
+            {date.getMonth()}.{date.getDate()}
         </div>
     );
 }
