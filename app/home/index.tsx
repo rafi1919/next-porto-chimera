@@ -1,15 +1,15 @@
 import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
+import ContentSection from "../components/Section/ContentSection";
 
 
 export default function Home() {
     return (
-        <section className="grid min-h-dvh grid-rows-[1fr_auto]">
-            <Navbar />
-            <div className="mt-auto">
-                <Footer />
-            </div>
-        </section>
+        <div className="grid min-h-dvh grid-rows-[1fr_auto]">
+            {/* <Navbar /> */}
+            <ContentSection />
+            <Footer />
+        </div>
     );
 }
 
