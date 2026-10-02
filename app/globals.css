@@ -18,6 +18,8 @@
   --color-diamond-900: #202B69;
   --color-diamond-950: #151C47;
 
+  --color-diamond-black: #0B0F22;
+
   --color-background: var(--color-diamond-50);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
