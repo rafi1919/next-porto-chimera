@@ -171,8 +171,8 @@ export function SciFiToggle({
               duration-200
               ${
                 on
-                  ? "text-[#baff00] drop-shadow-[0_0_3px_rgba(186,255,0,.25)]"
-                  : "text-[#4f5c20]"
+                  ? "text-diamond-400 drop-shadow-[0_0_3px_rgba(57,95,192,.45)]"
+                  : "text-diamond-800"
               }
             `}
           >
@@ -190,7 +190,7 @@ export function SciFiToggle({
               tracking-[1px]
               transition-colors
               duration-200
-              ${on ? "text-[#9bd600]" : "text-[#3c451d]"}
+              ${on ? "text-diamond-400" : "text-diamond-900"}
             `}
           >
             {on ? "ACTIVE" : "OFF"}

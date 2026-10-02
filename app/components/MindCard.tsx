@@ -70,7 +70,7 @@ export function MindCard({
             px-[8px]
             transition-colors
             duration-300
-            ease-out ${isActive ? "bg-[#baff00]" : "bg-[#4f5c20]"}`
+            ease-out ${isActive ? "bg-diamond-600" : "bg-diamond-800"}`
           }
         >
           <span
