@@ -1,14 +1,15 @@
 interface SeperatorProps {
-    mode?: "horizontal" | "vertical";
+    mode: "horizontal" | "vertical";
     backgroundColor?: string;
     weight?: "thin" | "thick";
     className?: string;
 }
 
-// ponytail: static maps, not template strings — Tailwind only scans literal class names
+// ponytail: vertical uses self-stretch, not h-full — `h-full` resolves to 0
+// inside a `flex items-center` parent, which is most of them.
 const SIZE = {
     horizontal: { thin: "w-full h-px", thick: "w-full h-0.5" },
-    vertical: { thin: "h-full w-px", thick: "h-full w-0.5" },
+    vertical: { thin: "self-stretch w-px", thick: "self-stretch w-0.5" },
 };
 
 export default function Seperator({
