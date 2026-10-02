@@ -5,7 +5,11 @@ import LatestProjectSection from "./LatestProjectSection";
 import ServiceSection from "./ServiceSeection";
 import GameSection from "./GameSection";
 
-export default function ContentSection() {
+export default function ContentSection({
+    onSectionChange,
+}: {
+    onSectionChange?: (label: string) => void;
+}) {
     const [activeIndex, setActiveIndex] = useState(0);
 
     const SECTIONS = [
@@ -24,7 +28,10 @@ export default function ContentSection() {
                         key={section.label}
                         aria-label={`Show ${section.label}`}
                         aria-current={activeIndex === index}
-                        onClick={() => setActiveIndex(index)}
+                        onClick={() => {
+                            setActiveIndex(index);
+                            onSectionChange?.(section.label);
+                        }}
                         className={`w-2 cursor-pointer rounded-full transition-[height,background-color] duration-300 ease-out ${
                             activeIndex === index ? "h-10 bg-blue-500" : "h-5 bg-gray-500 hover:bg-gray-400"
                         }`}

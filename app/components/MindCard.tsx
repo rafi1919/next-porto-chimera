@@ -84,14 +84,19 @@ export function MindCard({
               text-black
             "
           >
-            MIND&gt;
+            MIND
           </span>
 
-          {/* <Search
-            size={13}
-            strokeWidth={3.5}
-            className="text-black"
-          /> */}
+          {/* Plus icon — mask so the monochrome SVG takes the bg color */}
+          <span
+            aria-hidden
+            className="
+              size-3.25
+              shrink-0
+              bg-black
+              [mask:url(/icon/hud-plus-square.svg)_center/contain_no-repeat]
+            "
+          />
 
           {/* tiny corner cut */}
           <div
