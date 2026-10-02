@@ -18,7 +18,7 @@ export default function BannerSection() {
                 <h1 className="max-w-xl text-4xl font-bold leading-[0.9] tracking-[-0.04em] sm:text-5xl lg:text-7xl">
                     Same sky
                     <br />
-                    different story
+                    Different story
                 </h1>
             </div>
 
