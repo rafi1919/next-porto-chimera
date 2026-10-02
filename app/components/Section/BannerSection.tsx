@@ -1,11 +1,16 @@
+"use client";
 import Image from "next/image";
+import { Lottie } from "lottie-react";
+import { useReducedMotion } from "framer-motion";
 
 
 export default function BannerSection() {
-    return( 
+    const reduceMotion = useReducedMotion();
+
+    return(
             <div
                     id="banner"
-                    className="grid min-h-[520px] w-full grid-cols-2 grid-rows-[auto_1fr_auto] p-4"
+                    className="grid h-full w-full grid-cols-2 grid-rows-[auto_1fr_auto] p-4"
                 >
                     {/* ───────── TOP ───────── */}
 
@@ -37,13 +42,27 @@ export default function BannerSection() {
 
             <div
                 className="
+                    relative overflow-hidden
                     col-span-2 row-start-2
                     min-h-[40vh]
                     bg-diamond-400
                     rounded-tl-2xl
                     rounded-br-2xl
                 "
-            />
+            >
+                {/* Cage: absolute so the animation takes the band's box and
+                    contributes zero height back to the grid row. */}
+                <div className="absolute inset-0">
+                    <Lottie
+                        src="/lottie/halftone_clouds.json"
+                        loop
+                        autoplay={!reduceMotion}
+                        rendererSettings={{ preserveAspectRatio: "xMidYMid slice" }}
+                        aria-hidden
+                        className="h-full w-full"
+                    />
+                </div>
+            </div>
 
             {/* ───────── BOTTOM ───────── */}
 
