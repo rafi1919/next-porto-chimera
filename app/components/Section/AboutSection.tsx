@@ -15,13 +15,9 @@ const Hl = ({ children }: { children: ReactNode }) => (
 const Step = ({ n, className = "", children }: { n: number; className?: string; children: ReactNode }) => (
     <div
         data-reveal
-        className={`flex flex-col gap-5 self-center pr-6 opacity-15 grayscale motion-reduce:opacity-100 motion-reduce:grayscale-0 ${className}`}
+        className={`flex flex-col gap-3 self-center opacity-15 grayscale motion-reduce:opacity-100 motion-reduce:grayscale-0 sm:gap-5 sm:pr-6 ${className}`}
     >
-        <p className="flex items-center gap-3 font-mono text-xs uppercase tracking-[0.3em] text-diamond-600">
-            <span aria-hidden className="h-px w-8 bg-diamond-600" />
-            {String(n).padStart(2, "0")} / 03
-        </p>
-        <p className="border-l-2 border-diamond-600/40 pl-4 text-2xl font-bold leading-[1.1] tracking-tight text-diamond-900 sm:text-xl xl:text-2xl">
+        <p className="border-l-2 border-diamond-600/40 pl-3 text-lg font-bold leading-[1.15] tracking-tight text-diamond-900 sm:pl-4 sm:text-xl xl:text-2xl">
             {children}
         </p>
     </div>
@@ -71,11 +67,11 @@ export default function AboutSection() {
 
     return (
         // Big empty space above and below the pinned part
-        <div id="about-section" className="w-full py-[25vh] motion-reduce:py-20">
+        <div id="about-section" className="w-full py-[12vh] motion-reduce:py-20 sm:py-[25vh]">
             {/* Scroll runway: its height is how long the stage stays stuck. */}
             <div ref={runwayRef} className="relative h-[400vh] motion-reduce:h-auto">
                 {/* Pinned stage via CSS sticky (no ScrollTrigger pin spacers to fight the layout) */}
-                <div className="sticky top-0 mx-auto flex h-[var(--stage,100svh)] w-full max-w-7xl flex-col justify-center gap-12 px-6 motion-reduce:static motion-reduce:h-auto lg:grid lg:grid-cols-3 lg:grid-rows-3 lg:gap-0 lg:px-10 lg:py-[12vh]">
+                <div className="sticky top-0 mx-auto flex h-[var(--stage,100svh)] w-full max-w-7xl flex-col justify-center gap-6 px-4 motion-reduce:static motion-reduce:h-auto sm:gap-10 sm:px-6 lg:grid lg:grid-cols-3 lg:grid-rows-3 lg:gap-0 lg:px-10 lg:py-[12vh]">
                     <Step n={1} className="lg:col-start-1 lg:row-start-1">
                         <Hl>rainoutside</Hl> isn&apos;t a brand yet.
                     </Step>
