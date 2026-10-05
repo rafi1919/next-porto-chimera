@@ -1,0 +1,34 @@
+[
+    {
+        "id": 1,
+        "name": "Cavos",
+        "description": "AI call operations for APAC contact centres — outbound campaigns, real-time QA auditing, and agent coaching across Indonesian, Malay, and English.",
+        "stack": ["nextjs", "typescript", "tailwind", "laravel"],
+        "image": "/project/cavos.webp",
+        "href": "https://cavos.io/"
+    },
+    {
+        "id": 2,
+        "name": "Mons",
+        "description": "MONS x Rainoutside: an illustration label for the feelings people can't say out loud, carried onto apparel and everyday objects.",
+        "stack": ["nextjs", "typescript", "tailwind"],
+        "image": "/project/mons.webp",
+        "href": "https://mons.rainoutside.art/"
+    },
+    {
+        "id": 3,
+        "name": "Sarga News",
+        "description": "Indonesia's horse racing portal — race coverage, jockeys, and equestrian sport, from dressage to the odd motorsport detour.",
+        "stack": ["laravel", "php", "tailwind"],
+        "image": "/project/sarga.webp",
+        "href": "https://news.sarga.co/id"
+    },
+    {
+        "id": 4,
+        "name": "Bolong",
+        "description": "An Indonesian news portal on everything China — business, technology, culture, and the diplomacy between the two countries.",
+        "stack": ["laravel", "php", "tailwind"],
+        "image": "/project/bolong.webp",
+        "href": "https://bolong.id/"
+    }
+]
