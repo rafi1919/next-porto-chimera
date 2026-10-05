@@ -10,7 +10,7 @@ export default function BannerSection() {
     return(
             <div
                 id="banner"
-                className="grid h-full w-full grid-cols-2 grid-rows-[auto_1fr_auto] p-4"
+                className="grid h-full w-full grid-cols-2 grid-rows-[auto_1fr_auto] p-10"
                 >
                     {/* ───────── TOP ───────── */}
 
@@ -54,7 +54,7 @@ export default function BannerSection() {
                     contributes zero height back to the grid row. */}
                 <div className="absolute inset-0">
                     <Lottie
-                        src="/lottie/halftone_clouds.json"
+                        src="/lottie/halftone_clouds_1.json"
                         loop
                         autoplay={!reduceMotion}
                         rendererSettings={{ preserveAspectRatio: "xMidYMid slice" }}

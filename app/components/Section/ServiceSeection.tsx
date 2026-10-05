@@ -57,7 +57,7 @@ export default function ServiceSection() {
         setActive((prev) => ({ ...prev, [number]: on }));
 
     return (
-        <div className="mx-auto grid w-full max-w-400 grid-cols-1 gap-4 px-6 lg:grid-cols-8">
+        <div className="mx-auto grid w-full max-w-400 grid-cols-1 gap-4 p-10 lg:grid-cols-8">
             <NavTag number="03" text="Services" />
 
             {/* ── Control panel ─────────────────────────── */}

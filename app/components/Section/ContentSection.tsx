@@ -4,7 +4,7 @@ import BannerSection from "./BannerSection";
 import LatestProjectSection from "./LatestProjectSection";
 import ServiceSection from "./ServiceSeection";
 import ContactSection from "./ContactSection";
-import GameSection from "./GameSection";
+// import GameSection from "./GameSection";
 
 export default function ContentSection({
     onSectionChange,
@@ -18,7 +18,7 @@ export default function ContentSection({
         { label: "Latest Project", content: <LatestProjectSection /> },
         { label: "Services", content: <ServiceSection /> },
         { label: "Contact", content: <ContactSection /> },
-        { label: "Game", content: <GameSection /> },
+        // { label: "Game", content: <GameSection /> },
     ];
 
     return (
@@ -46,7 +46,7 @@ export default function ContentSection({
                     key={section.label}
                     className={
                         activeIndex === index
-                            ? "flex h-full w-full justify-center p-6"
+                            ? "flex h-full w-full justify-center"
                             : "hidden"
                     }
                 >
