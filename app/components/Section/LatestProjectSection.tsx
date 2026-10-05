@@ -6,14 +6,12 @@ import { useLenis } from "lenis/react";
 import Snap from "lenis/snap";
 import LatestProjectCard, { type Project } from "../TicketCard";
 import ProjectOverlay from "../ProjectOverlay";
+import projectData from "@/public/data/project_data.json";
 
-const PROJECTS: Project[] = [
-    { id: 1,  name: "Cavos Landing Page",   description: "A modern landing page for the Cavos project.",                 stack: ["nextjs", "typescript", "tailwind", "laravel"], image: "/3.svg" },
-    { id: 2,  name: "Inventory Dashboard",  description: "Stock, orders, and reporting in one operator-facing panel.",   stack: ["react", "go", "postgres"],                     image: "/3.svg" },
-    { id: 3,  name: "Booking Engine",       description: "Real-time availability and payments for a travel operator.",   stack: ["vue", "node", "tailwind"],                     image: "/3.svg" },
-    { id: 4,  name: "Fleet Tracker",        description: "Live vehicle positions and route history on one map.",         stack: ["nextjs", "typescript", "postgres"],            image: "/3.svg" },
-    { id: 5,  name: "Invoice Portal",       description: "Recurring billing, reminders, and PDF export for SMEs.",       stack: ["laravel", "php", "tailwind"],                  image: "/3.svg" }
-];
+// Imported, not fetched: the stack measures card 0 on its first frame, so an empty
+// first render would leave it with nothing to size against. JSON widens the `stack`
+// strings to plain string[], hence the cast — a typo there won't be caught.
+const PROJECTS = projectData as Project[];
 
 const pad = (n: number) => String(n).padStart(2, "0");
 
@@ -30,7 +28,12 @@ const SNAP_DEBOUNCE = 120; // ms
 
 /* Gaps are specified in on-screen pixels, not fractions of the card: receding cards
    shrink under perspective, so a fixed fraction would close the gap as you go out.
-   render() converts these to plane-space offsets each frame. */
+   render() converts these to plane-space offsets each frame.
+
+   They're quoted at DESIGN_W and scaled by the real card width, so a phone gets the
+   same composition rather than desktop gaps eating the screen. Perspective scales
+   with them — left at 1800px it would flatten the depth cue to nothing at 300px wide. */
+const DESIGN_W = 832; // px — the card at its 52rem cap
 const GAP_X = 96;   // px of background between two neighbouring cards
 const STEP_Y = 150; // px each card sits above the one before it
 const DEPTH = 0.2;  // z pushed back per step, in card widths — pure depth cue
@@ -38,6 +41,12 @@ const TILT_X = 24;
 const TILT_Y = -28;
 const PERSPECTIVE = 1800; // px; the stage sets this inline so the maths can read it
 const CULL = 2.6; // hide cards further than this many steps from centre
+
+/* Grab: the centred card turns to face you, and can be pushed around from there.
+   Degrees of tilt per pixel dragged, the cap, and the spring back on release. */
+const DRAG_DEG = 0.12;
+const DRAG_MAX = 26;
+const DRAG_RETURN = 0.9; // seconds
 
 export default function LatestProjectSection() {
     const [index, setIndex] = useState(0);
@@ -91,6 +100,43 @@ export default function LatestProjectSection() {
             return Math.min(1, Math.max(0, p)) * (total - 1);
         };
         const slot = () => Math.min(total - 1, Math.max(0, Math.round(stack.at)));
+
+        // Pointer drag on the centred card, in screen px from where the grab started.
+        // gsap springs it back to 0 on release.
+        const drag = { x: 0, y: 0 };
+        let dragging = false;
+        let grabX = 0;
+        let grabY = 0;
+
+        const onPointerDown = (e: PointerEvent) => {
+            // ponytail: mouse and pen only. On a phone the card covers most of the stage,
+            // so claiming the gesture would leave no room to scroll the carousel at all.
+            if (e.pointerType === "touch") return;
+            const el = cardRefs.current[slot()];
+            if (!el || !(e.target instanceof Node) || !el.contains(e.target)) return;
+            dragging = true;
+            grabX = e.clientX;
+            grabY = e.clientY;
+            gsap.killTweensOf(drag);
+            stage.setPointerCapture(e.pointerId);
+            lenis?.stop(); // a touch drag would otherwise scroll the page out from under it
+        };
+        const onPointerMove = (e: PointerEvent) => {
+            if (!dragging) return;
+            drag.x = e.clientX - grabX;
+            drag.y = e.clientY - grabY;
+        };
+        const onPointerUp = (e: PointerEvent) => {
+            if (!dragging) return;
+            dragging = false;
+            if (stage.hasPointerCapture(e.pointerId)) stage.releasePointerCapture(e.pointerId);
+            lenis?.start();
+            gsap.to(drag, { x: 0, y: 0, duration: DRAG_RETURN, ease: "elastic.out(1, 0.5)", overwrite: true });
+        };
+        stage.addEventListener("pointerdown", onPointerDown);
+        stage.addEventListener("pointermove", onPointerMove);
+        stage.addEventListener("pointerup", onPointerUp);
+        stage.addEventListener("pointercancel", onPointerUp);
 
         // Snap now hangs off the page's Lenis, so "mandatory" would drag the whole
         // document onto these stops. Proximity at just over half a step behaves as
@@ -149,6 +195,16 @@ export default function LatestProjectSection() {
             // is the number the gap has to clear.
             const flat = w * Math.cos((TILT_Y * Math.PI) / 180);
             const k = w * DEPTH; // z added per step
+            const grabbed = slot();
+
+            // Everything in px scales with the card, so the layout is the same shape at
+            // 300px as at 832px.
+            const scale = w / DESIGN_W;
+            const gapX = GAP_X * scale;
+            const stepY = STEP_Y * scale;
+            const persp = PERSPECTIVE * scale;
+            const perspPx = `${persp}px`;
+            if (stage.style.perspective !== perspPx) stage.style.perspective = perspPx;
 
             for (let i = 0; i < total; i++) {
                 const el = cardRefs.current[i];
@@ -160,16 +216,27 @@ export default function LatestProjectSection() {
                 // the shrinking projected widths — integrating it keeps every gap at GAP_X
                 // instead of letting the far ones drift open.
                 const screenX = k > 0
-                    ? GAP_X * a + ((flat * PERSPECTIVE) / k) * Math.log(1 + (k * a) / PERSPECTIVE)
-                    : (GAP_X + flat) * a;
+                    ? gapX * a + ((flat * persp) / k) * Math.log(1 + (k * a) / persp)
+                    : (gapX + flat) * a;
                 const z = -k * a;
                 // Perspective divides by this on the way out, so multiply by it going in.
-                const undo = (PERSPECTIVE + k * a) / PERSPECTIVE;
+                const undo = (persp + k * a) / persp;
                 const x = dir * screenX * undo;
-                const y = -dir * STEP_Y * a * undo;
+                const y = -dir * stepY * a * undo;
+
+                // The tilt fades out over the last step in, so whichever card the snap
+                // lands on ends up square to the camera. Only that one answers the drag.
+                const face = Math.min(1, a);
+                let tiltX = TILT_X * face;
+                let tiltY = TILT_Y * face;
+                if (i === grabbed) {
+                    tiltX += gsap.utils.clamp(-DRAG_MAX, DRAG_MAX, -drag.y * DRAG_DEG);
+                    tiltY += gsap.utils.clamp(-DRAG_MAX, DRAG_MAX, drag.x * DRAG_DEG);
+                }
+
                 // Centre here rather than with Tailwind translate utilities — an inline
                 // `transform` and the `translate` property compose in a version-dependent order.
-                el.style.transform = `translate(-50%, -50%) translate3d(${x}px, ${y}px, ${z}px) rotateX(${TILT_X}deg) rotateY(${TILT_Y}deg)`;
+                el.style.transform = `translate(-50%, -50%) translate3d(${x}px, ${y}px, ${z}px) rotateX(${tiltX}deg) rotateY(${tiltY}deg)`;
                 el.style.visibility = a > CULL ? "hidden" : "visible";
                 el.style.zIndex = String(total - Math.round(a));
             }
@@ -210,6 +277,11 @@ export default function LatestProjectSection() {
             gsap.ticker.remove(tick);
             observer.disconnect();
             resizeObserver.disconnect();
+            stage.removeEventListener("pointerdown", onPointerDown);
+            stage.removeEventListener("pointermove", onPointerMove);
+            stage.removeEventListener("pointerup", onPointerUp);
+            stage.removeEventListener("pointercancel", onPointerUp);
+            gsap.killTweensOf(drag);
             window.removeEventListener("scrollend", onScrollEnd);
             clearSnaps.forEach((remove) => remove());
             snap?.destroy();
@@ -229,14 +301,21 @@ export default function LatestProjectSection() {
                 style={{ perspective: `${PERSPECTIVE}px` }}
                 className="sticky top-0 h-(--stage) overflow-hidden perspective-origin-[50%_50%]"
             >
-                {/* Ticket stack */}
-                <div className="absolute inset-0 transform-3d">
+                {/* Pushed down on mobile to clear the info panel, which is full width there
+                    and would otherwise sit on the centred card's face. */}
+                <div className="absolute inset-0 translate-y-14 select-none transform-3d sm:translate-y-0">
                     {PROJECTS.map((item, i) => (
                         <div
                             key={item.id}
                             ref={(el) => { cardRefs.current[i] = el; }}
                             aria-hidden
-                            className="pointer-events-none invisible absolute left-1/2 top-1/2 w-[min(78vw,52rem)] will-change-transform"
+                            className={`invisible absolute left-1/2 top-1/2 w-[min(78vw,52rem)] will-change-transform ${
+                                // Only the centred card takes the pointer. No touch-action
+                                // override — touch scrolling has to keep working here.
+                                i === index
+                                    ? "pointer-events-auto cursor-grab active:cursor-grabbing"
+                                    : "pointer-events-none"
+                            }`}
                         >
                             <LatestProjectCard
                                 project={item}

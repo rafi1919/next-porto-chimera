@@ -9,8 +9,9 @@ import { Arrow } from "./Arrow";
 const NOTCH = `radial-gradient(var(--notch) at calc(100% - var(--stub)) 0, #0000 97%, #000) top / 100% 51% no-repeat,
 radial-gradient(var(--notch) at calc(100% - var(--stub)) 100%, #0000 97%, #000) bottom / 100% 51% no-repeat`;
 
+// --stub is set by class so it can move at breakpoints; the mask reads it off the
+// same element. 7rem of stub on a 300px-wide phone card is a third of the ticket.
 const ticketStyle = {
-    "--stub": "7rem",
     "--notch": "14px",
     WebkitMask: NOTCH,
     mask: NOTCH,
@@ -50,7 +51,7 @@ export default function LatestProjectCard  ({ project, index = 0, total = 1, zoo
         <div>
             <div
                 style={ticketStyle}
-                className="relative flex h-88 overflow-hidden bg-diamond-900 sm:h-100 [clip-path:polygon(24px_0,100%_0,100%_calc(100%-24px),calc(100%-24px)_100%,0_100%,0_24px)]"
+                className="relative flex h-64 overflow-hidden bg-diamond-900 [--stub:4.5rem] sm:h-88 sm:[--stub:7rem] md:h-100 [clip-path:polygon(24px_0,100%_0,100%_calc(100%-24px),calc(100%-24px)_100%,0_100%,0_24px)]"
             >
                 {/* Image side */}
                 <div className="relative min-w-0 flex-1 overflow-hidden">
@@ -77,7 +78,7 @@ export default function LatestProjectCard  ({ project, index = 0, total = 1, zoo
                     <span aria-hidden className="absolute bottom-4 right-4 size-4 border-b-2 border-r-2 border-diamond-100/70" />
 
                     {/* Meta strip */}
-                    <div className="absolute inset-x-0 bottom-0 flex items-end justify-between p-8 font-mono text-[11px] uppercase tracking-[0.25em] text-diamond-100">
+                    <div className="absolute inset-x-0 bottom-0 flex items-end justify-between p-4 font-mono text-[9px] uppercase tracking-[0.2em] text-diamond-100 sm:p-8 sm:text-[11px] sm:tracking-[0.25em]">
                         <span>PRJ-{pad(project.id)}</span>
                         <span className="flex items-center gap-2">
                             <span aria-hidden className="size-1.5 bg-diamond-400 motion-safe:animate-pulse" />
@@ -90,7 +91,7 @@ export default function LatestProjectCard  ({ project, index = 0, total = 1, zoo
                 <div aria-hidden className="my-6 w-0 self-stretch border-l-2 border-dashed border-diamond-100/30" />
 
                 {/* Stub */}
-                <aside className="flex w-(--stub) shrink-0 flex-col items-center justify-between gap-3 px-3 py-6 text-diamond-100">
+                <aside className="flex w-(--stub) shrink-0 flex-col items-center justify-between gap-2 px-2 py-4 text-diamond-100 sm:gap-3 sm:px-3 sm:py-6">
                     <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-diamond-100/60">No.</span>
 
                     <AnimatePresence mode="wait" initial={false}>
@@ -100,7 +101,7 @@ export default function LatestProjectCard  ({ project, index = 0, total = 1, zoo
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0 }}
                             transition={transition}
-                            className="rotate-180 font-mono text-6xl font-extrabold tabular-nums [writing-mode:vertical-rl]"
+                            className="rotate-180 font-mono text-4xl font-extrabold tabular-nums sm:text-6xl [writing-mode:vertical-rl]"
                         >
                             {pad(project.id)}
                         </motion.p>
