@@ -7,7 +7,9 @@ export const PAGE = "var(--color-diamond-50, #f0f8f7)";
 interface NotchProps {
     /** Which top corner of the parent the notch cuts out. Parent must be `relative`. */
     corner?: "tl" | "tr";
-    /** Radius of the notch's inner corner. The two edge shims use the same size. */
+    /** Radius of the notch's inner corner. The two edge shims use the same size.
+     *  Defaults to the --notch-radius custom property, so a caller can move it at
+     *  breakpoints with a class instead of needing a second component. */
     radius?: string;
     className?: string;
     children?: ReactNode;
@@ -18,7 +20,7 @@ interface NotchProps {
  * plus two shims that round the corners where the card wraps around it.
  * Size it with className (w-*, h-*, padding), or let the content size it.
  */
-export function Notch({ corner = "tl", radius = "2rem", className = "", children }: NotchProps) {
+export function Notch({ corner = "tl", radius = "var(--notch-radius, 2rem)", className = "", children }: NotchProps) {
     const left = corner === "tl";
 
     const shim: CSSProperties = {

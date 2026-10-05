@@ -32,17 +32,19 @@ const ContactData: ContactProps[]=[
 ]
 
 // ponytail: static strings — Tailwind can't see a class built as `col-start-${i}`
-const CARD_COLUMN = ["col-start-1", "col-start-2", "col-start-3"];
+// Only from md: below that every card is its own row in a single column.
+const CARD_COLUMN = ["md:col-start-1", "md:col-start-2", "md:col-start-3"];
 
 export default function ContactSection() {
     const reduceMotion = useReducedMotion();
 
     return(
-        <div id="contact-section" className="grid grid-cols-3 grid-rows-5 w-full min-h-(--stage) gap-4 p-4">
-            <div className="relative bg-diamond-800 rounded-2xl col-start-1 col-span-3 row-start-1 row-span-3 overflow-hidden">
+        <div id="contact-section" className="grid w-full min-h-(--stage) grid-cols-1 gap-4 p-4 md:grid-cols-3 md:grid-rows-5">
+            <div className="relative min-h-56 overflow-hidden rounded-2xl bg-diamond-800 md:col-start-1 md:col-span-3 md:row-start-1 md:row-span-3 md:min-h-0">
                 {/* Right half, cover — overflow bleeds off the edges and the
-                    panel's overflow-hidden crops it. */}
-                <div aria-hidden className="pointer-events-none absolute inset-y-0 -right-[200px] w-1/2">
+                    panel's overflow-hidden crops it. The desktop offset is wider than a
+                    phone panel, so the globe would sit entirely off-screen. */}
+                <div aria-hidden className="pointer-events-none absolute inset-y-0 -right-16 w-2/3 md:-right-[200px] md:w-1/2">
                     <Lottie
                         src="/lottie/hud_globe.json"
                         loop
@@ -53,9 +55,15 @@ export default function ContactSection() {
                     />
                 </div>
 
-                 <div className="relative bg-diamond-800/0 rounded-[2rem] col-start-1 col-span-3 row-start-1 row-span-3">
-                        <Notch corner="tl" className="pb-4 pr-8">
-                            <h2 className="text-4xl font-extrabold uppercase leading-[0.9] tracking-tighter text-diamond-black">
+                 <div className="relative">
+                        {/* rounded-tl matches the panel's own rounded-2xl: the panel clips
+                            with overflow-hidden, so a square notch corner shows a navy nub
+                            through it. The inner radius shrinks with the panel on mobile. */}
+                        <Notch
+                            corner="tl"
+                            className="rounded-tl-2xl [--notch-radius:1.25rem] pb-3 pl-4 pr-6 pt-3 sm:[--notch-radius:2rem] sm:pb-4 sm:pl-6 sm:pr-8 sm:pt-4"
+                        >
+                            <h2 className="text-3xl font-extrabold uppercase leading-[0.9] tracking-tighter text-diamond-black sm:text-4xl">
                                 Contact
                             </h2>
                         </Notch>
@@ -64,7 +72,7 @@ export default function ContactSection() {
             {ContactData.map((contact, index) => (
                 <div
                     key={contact.type}
-                    className={`relative overflow-hidden bg-diamond-800 rounded-2xl col-span-1 row-start-4 row-span-2 ${CARD_COLUMN[index]}`}
+                    className={`relative overflow-hidden rounded-2xl bg-diamond-800 md:col-span-1 md:row-start-4 md:row-span-2 ${CARD_COLUMN[index]}`}
                 >
                     <ContactCard data={contact} />
                 </div>
@@ -115,17 +123,17 @@ const ContactCard = ({ data }: { data: ContactProps }) => {
             <span aria-hidden className="absolute bottom-5 right-5 size-3 border-b-2 border-r-2 border-diamond-100/0 transition-colors duration-300 group-hover:border-diamond-100/70" />
 
             {/* Top row: label + link arrow */}
-            <div className="relative z-10 flex items-start justify-between p-6">
-                <p className="font-mono text-xs uppercase tracking-[0.3em] text-diamond-100/60">
+            <div className="relative z-10 flex items-start justify-between p-4 sm:p-6">
+                <p className="min-w-0 break-all font-mono text-[10px] uppercase tracking-[0.2em] text-diamond-100/60 sm:text-xs sm:tracking-[0.3em]">
                     {data.url ?? (isExternal ? "Link" : "Contact")}
                 </p>
-                <span className="flex size-11 items-center justify-center rounded-full border border-diamond-100/30 text-diamond-50 transition-colors duration-300 group-hover:border-diamond-50 group-hover:bg-diamond-50 group-hover:text-diamond-900">
+                <span className="flex size-9 shrink-0 items-center justify-center rounded-full border border-diamond-100/30 text-diamond-50 transition-colors duration-300 group-hover:border-diamond-50 group-hover:bg-diamond-50 group-hover:text-diamond-900 sm:size-11">
                     <Arrow className="size-4 -rotate-45 transition-transform duration-300 motion-safe:group-hover:translate-x-0.5 motion-safe:group-hover:-translate-y-0.5" />
                 </span>
             </div>
 
             {/* Value: pinned bottom-left */}
-            <p className="absolute inset-x-0 bottom-0 z-10 max-w-[80%] break-words p-6 text-2xl font-bold leading-tight tracking-tight text-diamond-50 sm:text-3xl">
+            <p className="absolute inset-x-0 bottom-0 z-10 max-w-[80%] break-words p-4 text-xl font-bold leading-tight tracking-tight text-diamond-50 sm:p-6 sm:text-2xl md:text-3xl">
                 <span className="bg-[linear-gradient(currentColor,currentColor)] bg-[length:0%_2px] bg-bottom bg-no-repeat pb-1 transition-[background-size] duration-300 group-hover:bg-[length:100%_2px]">
                     {data.value}
                 </span>
