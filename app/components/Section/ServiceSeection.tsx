@@ -2,7 +2,6 @@
 import { useState, type CSSProperties, type ReactNode } from "react";
 import { MindCard } from "../MindCard";
 import { SciFiToggle } from "../SciFiToggle";
-import NavTag from "../NavTag";
 import Seperator from "../Seperator";
 
 interface Service {
@@ -57,10 +56,7 @@ export default function ServiceSection() {
         setActive((prev) => ({ ...prev, [number]: on }));
 
     return (
-        <div className="mx-auto grid w-full max-w-400 grid-cols-1 gap-4 p-10 lg:grid-cols-8">
-            <NavTag number="03" text="Services" />
-
-            {/* ── Control panel ─────────────────────────── */}
+        <div className="mx-auto grid min-h-(--stage) w-full max-w-400 grid-cols-1 content-center gap-4 p-10 lg:grid-cols-8">
             <aside className="flex items-center justify-between gap-4 rounded-[2rem] bg-diamond-900 p-4 lg:col-span-1 lg:w-fit lg:flex-col lg:items-center lg:justify-start lg:gap-6 lg:py-6">
                 <div className="flex gap-4 lg:flex-col lg:gap-6">
                     {SERVICES.slice(0, 3).map((service) => (
@@ -80,7 +76,6 @@ export default function ServiceSection() {
                     ))}
                 </div>
 
-                {/* Banner stripe motif, pinned to the bottom of the panel */}
                 <span
                     aria-hidden
                     className="mt-auto hidden h-5 w-full bg-diamond-700 lg:block [mask:repeating-linear-gradient(115deg,#000_0_10px,#0000_10px_20px)]"

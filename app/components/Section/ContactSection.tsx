@@ -38,7 +38,7 @@ export default function ContactSection() {
     const reduceMotion = useReducedMotion();
 
     return(
-        <div id="contact-section" className="grid grid-cols-3 grid-rows-5 w-full h-full gap-4 p-4">  
+        <div id="contact-section" className="grid grid-cols-3 grid-rows-5 w-full min-h-(--stage) gap-4 p-4">
             <div className="relative bg-diamond-800 rounded-2xl col-start-1 col-span-3 row-start-1 row-span-3 overflow-hidden">
                 {/* Right half, cover — overflow bleeds off the edges and the
                     panel's overflow-hidden crops it. */}

@@ -10,7 +10,7 @@ export default function BannerSection() {
     return(
             <div
                 id="banner"
-                className="grid h-full w-full grid-cols-2 grid-rows-[auto_1fr_auto] p-10"
+                className="grid min-h-(--stage) w-full grid-cols-2 grid-rows-[auto_1fr_auto] p-10"
                 >
                     {/* ───────── TOP ───────── */}
 
