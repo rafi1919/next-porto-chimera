@@ -1,23 +1,33 @@
 "use client";
-import { useState } from "react";
+import type { CSSProperties } from "react";
+import { ReactLenis } from "lenis/react";
+import { useReducedMotion } from "framer-motion";
 import Footer from "../components/Footer";
-import Navbar from "../components/Navbar";
 import ContentSection from "../components/Section/ContentSection";
 
+const FOOTER = "6rem"; // Footer is h-24
 
 export default function Home() {
-    const [activeSection, setActiveSection] = useState("Banner");
-    const showNavbar = activeSection === "Game";
+    const reduceMotion = useReducedMotion();
 
     return (
-        <div
-            className={`grid min-h-dvh ${
-                showNavbar ? "grid-rows-[auto_1fr_auto]" : "grid-rows-[1fr_auto]"
-            }`}
+
+        <ReactLenis
+            root
+            options={{
+                smoothWheel: !reduceMotion,
+                lerp: 0.1,
+                wheelMultiplier: 1,
+                touchMultiplier: 1.2,
+            }}
         >
-            {showNavbar && <Navbar />}
-            <ContentSection onSectionChange={setActiveSection} />
+            <div
+                style={{ "--stage": `calc(100dvh - ${FOOTER})` } as CSSProperties}
+                className="pb-24"
+            >
+                <ContentSection />
+            </div>
             <Footer />
-        </div>
+        </ReactLenis>
     );
 }
