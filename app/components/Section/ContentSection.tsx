@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { useLenis } from "lenis/react";
 import BannerSection from "./BannerSection";
 import LatestProjectSection from "./LatestProjectSection";
-import ServiceSection from "./ServiceSeection";
+// import ServiceSection from "./ServiceSeection";
 import ContactSection from "./ContactSection";
 import AboutSection from "./AboutSection";
 // import GameSection from "./GameSection";
@@ -12,7 +12,7 @@ const SECTIONS = [
     { id: "banner", label: "Banner", content: <BannerSection /> },
     { id: "about", label: "About", content: <AboutSection /> },
     { id: "projects", label: "Latest Project", content: <LatestProjectSection /> },
-    { id: "services", label: "Services", content: <ServiceSection /> },
+    // { id: "services", label: "Services", content: <ServiceSection /> },
     { id: "contact", label: "Contact", content: <ContactSection /> },
     // { id: "game", label: "Game", content: <GameSection /> },
 ];
@@ -51,7 +51,7 @@ export default function ContentSection() {
         <div className="relative">
             <nav
                 aria-label="Section shortcuts"
-                className="fixed right-7 top-1/2 z-50 flex -translate-y-1/2 flex-col gap-4"
+                className="fixed lg:right-7 md:right-4 right-1 top-1/2 z-50 flex -translate-y-1/2 flex-col gap-4"
             >
                 {SECTIONS.map((section, index) => (
                     <button
