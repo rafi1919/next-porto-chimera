@@ -3,6 +3,7 @@ import { useState } from "react";
 import BannerSection from "./BannerSection";
 import LatestProjectSection from "./LatestProjectSection";
 import ServiceSection from "./ServiceSeection";
+import ContactSection from "./ContactSection";
 import GameSection from "./GameSection";
 
 export default function ContentSection({
@@ -16,13 +17,13 @@ export default function ContentSection({
         { label: "Banner", content: <BannerSection /> },
         { label: "Latest Project", content: <LatestProjectSection /> },
         { label: "Services", content: <ServiceSection /> },
-        { label: "Placeholder", content: <div /> },
+        { label: "Contact", content: <ContactSection /> },
         { label: "Game", content: <GameSection /> },
     ];
 
     return (
         <div className="relative h-full">
-            <div className="fixed right-14 top-1/2 z-50 flex -translate-y-1/2 flex-col gap-4">
+            <div className="fixed right-7 top-1/2 z-50 flex -translate-y-1/2 flex-col gap-4">
                 {SECTIONS.map((section, index) => (
                     <button
                         key={section.label}

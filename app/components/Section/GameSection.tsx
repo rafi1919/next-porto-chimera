@@ -10,7 +10,7 @@ const Tag = ({ n }: { n: number }) => (
 
 export default function GameSection() {
     return (
-        <div id="game-section" className="mx-auto w-full px-6 py-4 lg:h-full">
+        <div id="game-section" className="mx-auto w-full p-4 lg:h-full">
             <div className="grid grid-cols-1 gap-3 lg:h-full lg:grid-cols-8 lg:grid-rows-8">
 
                 {/* A: top-left */}
