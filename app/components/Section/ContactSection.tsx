@@ -63,7 +63,7 @@ export default function ContactSection() {
                             corner="tl"
                             className="rounded-tl-2xl [--notch-radius:1.25rem] pb-3 pl-4 pr-6 pt-3 sm:[--notch-radius:2rem] sm:pb-4 sm:pl-6 sm:pr-8 sm:pt-4"
                         >
-                            <h2 className="text-3xl font-extrabold uppercase leading-[0.9] tracking-tighter text-diamond-black sm:text-4xl">
+                            <h2 className="uppercase text-diamond-black">
                                 Contact
                             </h2>
                         </Notch>
@@ -124,7 +124,7 @@ const ContactCard = ({ data }: { data: ContactProps }) => {
 
             {/* Top row: label + link arrow */}
             <div className="relative z-10 flex items-start justify-between p-4 sm:p-6">
-                <p className="min-w-0 break-all font-mono text-[10px] uppercase tracking-[0.2em] text-diamond-100/60 sm:text-xs sm:tracking-[0.3em]">
+                <p className="min-w-0 break-all font-mono text-label uppercase text-diamond-100/80">
                     {data.url ?? (isExternal ? "Link" : "Contact")}
                 </p>
                 <span className="flex size-9 shrink-0 items-center justify-center rounded-full border border-diamond-100/30 text-diamond-50 transition-colors duration-300 group-hover:border-diamond-50 group-hover:bg-diamond-50 group-hover:text-diamond-900 sm:size-11">
@@ -133,7 +133,7 @@ const ContactCard = ({ data }: { data: ContactProps }) => {
             </div>
 
             {/* Value: pinned bottom-left */}
-            <p className="absolute inset-x-0 bottom-0 z-10 max-w-[80%] break-words p-4 text-xl font-bold leading-tight tracking-tight text-diamond-50 sm:p-6 sm:text-2xl md:text-3xl">
+            <p className="absolute inset-x-0 bottom-0 z-10 max-w-[80%] break-words p-4 text-lead text-diamond-50 sm:p-6">
                 <span className="bg-[linear-gradient(currentColor,currentColor)] bg-[length:0%_2px] bg-bottom bg-no-repeat pb-1 transition-[background-size] duration-300 group-hover:bg-[length:100%_2px]">
                     {data.value}
                 </span>

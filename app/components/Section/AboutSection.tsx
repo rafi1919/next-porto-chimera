@@ -7,8 +7,10 @@ import { useLenis } from "lenis/react";
 
 gsap.registerPlugin(ScrollTrigger);
 
+// diamond-600, not -500: at text-lead's 20px bold the large-text threshold
+// (18.66px) doesn't apply, so this needs the full 4.5:1. -500 is 4.12:1.
 const Hl = ({ children }: { children: ReactNode }) => (
-    <span className="text-diamond-500">{children}</span>
+    <span className="text-diamond-600">{children}</span>
 );
 
 /** One step. Same type size for all of them; starts faint + grey until revealed. */
@@ -17,7 +19,7 @@ const Step = ({ n, className = "", children }: { n: number; className?: string; 
         data-reveal
         className={`flex flex-col gap-3 self-center opacity-15 grayscale motion-reduce:opacity-100 motion-reduce:grayscale-0 sm:gap-5 sm:pr-6 ${className}`}
     >
-        <p className="border-l-2 border-diamond-600/40 pl-3 text-lg font-bold leading-[1.15] tracking-tight text-diamond-900 sm:pl-4 sm:text-xl xl:text-2xl">
+        <p className="border-l-2 border-diamond-600/40 pl-3 text-lead text-diamond-900 sm:pl-4">
             {children}
         </p>
     </div>
