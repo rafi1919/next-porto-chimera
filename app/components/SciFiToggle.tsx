@@ -156,17 +156,14 @@ export function SciFiToggle({
             flex-col
             items-center
             justify-center
-            leading-none
           "
         >
           {/* Number */}
           <span
             className={`
               font-mono
-              text-[13px]
-              font-black
-              italic
-              tracking-[-1px]
+              text-label
+              -mr-[0.2em]
               transition-all
               duration-200
               ${
@@ -178,23 +175,17 @@ export function SciFiToggle({
           >
             {String(number).padStart(2, "0")}
           </span>
-
-          {/* Status */}
           <span
+            aria-hidden
             className={`
-              mt-[1px]
-              font-mono
-              text-[5px]
-              font-black
-              italic
-              tracking-[1px]
+              mt-[2px]
+              size-1.5
+              rounded-full
               transition-colors
               duration-200
-              ${on ? "text-diamond-400" : "text-diamond-900"}
+              ${on ? "bg-diamond-400" : "bg-diamond-900"}
             `}
-          >
-            {on ? "ACTIVE" : "OFF"}
-          </span>
+          />
         </div>
       </div>
     </button>

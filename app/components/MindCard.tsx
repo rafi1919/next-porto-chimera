@@ -37,9 +37,8 @@ export function MindCard({
           justify-center
           bg-[#f2f2f2]
           font-mono
-          text-[11px]
-          font-black
-          leading-none
+          text-label
+          -mr-[0.2em]
           text-black
         "
       >
@@ -76,11 +75,7 @@ export function MindCard({
           <span
             className="
               font-mono
-              text-[14px]
-              font-black
-              italic
-              leading-none
-              tracking-[-1.2px]
+              text-label
               text-black
             "
           >
@@ -116,10 +111,7 @@ export function MindCard({
           <p
             className="
               font-mono
-              text-[10px]
-              font-bold
-              leading-[1.2]
-              tracking-[-0.2px]
+              text-xs
               text-white
             "
           >
