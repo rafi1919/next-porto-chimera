@@ -16,10 +16,14 @@ export default function NavTag({ number, text, total= 5 }: NavTagProps) {
                 className="relative size-16 bg-diamond-700 flex items-center justify-center
                         [clip-path:polygon(14px_0,100%_0,100%_100%,0_100%,0_14px)]"
             >
-                <span className="text-diamond-50 text-3xl font-extrabold tabular-nums">
+                {/* Deliberately text-3xl, not text-readout: this sits in a size-16 box
+                    and a fluid readout overflows it. Because text-3xl is a plain size
+                    token it carries no weight, so this is the one readout that still
+                    needs an explicit one. */}
+                <span className="text-diamond-50 text-3xl font-extrabold">
                 {String(number).padStart(2, "0")}
                 </span>
-                <span className="absolute bottom-1 right-1.5 text-[10px] leading-none text-diamond-50/60">
+                <span className="absolute bottom-1 right-1.5 text-label text-diamond-50/80">
                 /{String(total).padStart(2, "0")}
                 </span>
             </div>
@@ -33,7 +37,7 @@ export default function NavTag({ number, text, total= 5 }: NavTagProps) {
                 <span className="size-1.5 bg-diamond-700 animate-pulse" aria-hidden />
                 <p
                     aria-live="polite"
-                    className="text-diamond-50 text-xl font-bold uppercase tracking-[0.2em]"
+                    className="text-diamond-50 text-label uppercase"
                 >
                 {text}
                 </p>
