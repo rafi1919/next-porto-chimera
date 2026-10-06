@@ -3,7 +3,7 @@ import type { ReactNode } from "react";
 const CARD = "relative rounded-[2rem] bg-diamond-700";
 
 const Tag = ({ n }: { n: number }) => (
-    <span className="absolute bottom-4 left-6 font-mono text-[11px] uppercase tracking-[0.25em] text-diamond-100/60">
+    <span className="absolute bottom-4 left-6 font-mono text-label uppercase text-diamond-100/80">
         Game {String(n).padStart(2, "0")}
     </span>
 );
@@ -15,7 +15,7 @@ export default function GameSection() {
 
                 {/* A: top-left */}
                 <div className="lg:col-start-1 lg:col-span-3 lg:row-start-1 lg:row-span-2">
-                    <h2 className="max-w-xl text-4xl font-bold leading-[0.9] tracking-[-0.04em] sm:text-5xl lg:text-7xl">
+                    <h2 className="max-w-xl">
                         Game Section
                     </h2>
 

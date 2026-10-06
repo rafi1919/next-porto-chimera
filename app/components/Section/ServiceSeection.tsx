@@ -116,12 +116,12 @@ export default function ServiceSection() {
                 {/* Banner-style cutout with live readout */}
                 <Cutout>
                     <div className="flex items-center gap-4 pb-4 pr-6">
-                        <p className="text-6xl font-extrabold leading-none tracking-tighter text-diamond-900 tabular-nums">
+                        <p className="text-readout text-diamond-900">
                             {pad(count)}
-                            <span className="text-2xl text-diamond-900/40">/{pad(SERVICES.length)}</span>
+                            <span className="text-[0.4em] text-diamond-900/70">/{pad(SERVICES.length)}</span>
                         </p>
                         <Seperator  mode="vertical"/>
-                        <p aria-live="polite" className="max-w-48 text-xs leading-snug text-diamond-900/70">
+                        <p aria-live="polite" className="max-w-48 text-xs text-diamond-900/80">
                             Services revealed. Toggle a number to clear the sky.
                         </p>
                     </div>
