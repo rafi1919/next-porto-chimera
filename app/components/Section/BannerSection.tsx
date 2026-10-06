@@ -18,7 +18,7 @@ export default function BannerSection() {
                     {/* ───────── TOP ───────── */}
 
             <div className="relative z-10 col-start-1 row-start-1 flex items-start md:pr-6 md:pt-4">
-                <h1 className="max-w-xl text-3xl font-bold leading-[0.9] tracking-[-0.04em] sm:text-4xl md:text-5xl lg:text-7xl">
+                <h1 className="max-w-xl text-diamond-black">
                     Same sky
                     <br />
                     Different story
@@ -72,16 +72,19 @@ export default function BannerSection() {
                 className="col-start-2 row-start-3 hidden size-10 self-start justify-self-start bg-[radial-gradient(circle_2.5rem_at_bottom_right,transparent_2.5rem,var(--color-diamond-400)_2.5rem)] md:block"
             />
 
-            <div className="relative z-10 col-start-1 row-start-3 md:col-start-2 md:pl-6 md:pb-4">
-                {/* Fluid below md so the wordmark fills the stacked column; the two-column
-                    motif takes over from md and goes back to stepped sizes. The globe is
-                    1.56em wide and sits on the same line, so the word itself can only have
-                    ~80% of the box — 10vw is what keeps them together. */}
-                <h2 className="text-[clamp(2rem,10vw,5rem)] flex font-bold leading-[0.9] tracking-[-0.04em] text-[#0B0F22] md:text-5xl lg:text-8xl">
-                    RAINOUTSIDE    
-                    {/* Inside the h2 so `em` inherits the heading's font-size —
-                        the globe rescales with every text breakpoint on its own. */}
-                        
+            <div className="@container relative z-10 col-start-1 row-start-3 md:col-start-2 md:pl-6 md:pb-4">
+                {/* Sized in cqi, not vw: this cell is full-width in the stacked layout and
+                    HALF-width from md (it moves to col-start-2), so no viewport-based
+                    expression can grow monotonically across that break — the old
+                    `clamp(2rem,10vw,5rem) md:text-5xl` actually shrank the wordmark at
+                    768px. 10.5cqi is ~96% of the container at every width.
+                    A <p>, not a heading: this is the logotype, not a section label — the
+                    h1 above already owns this section. */}
+                <p className="flex text-[clamp(2rem,10.5cqi,6rem)] font-bold text-diamond-black">
+                    RAINOUTSIDE
+                    {/* `em` inherits the wordmark's font-size, which is now container-driven,
+                        so the globe tracks the text with no breakpoints to fall out of sync. */}
+
                     <Image
                         src="/icon/hud-flat-globe.svg"
                         alt=""
@@ -90,7 +93,7 @@ export default function BannerSection() {
                         height={140}
                         className="inline-block h-[0.75em] w-auto align-baseline ml-auto"
                     />
-                </h2>
+                </p>
             </div>
         </div>
      )
