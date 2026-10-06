@@ -7,8 +7,6 @@ import { useLenis } from "lenis/react";
 
 gsap.registerPlugin(ScrollTrigger);
 
-// diamond-600, not -500: at text-lead's 20px bold the large-text threshold
-// (18.66px) doesn't apply, so this needs the full 4.5:1. -500 is 4.12:1.
 const Hl = ({ children }: { children: ReactNode }) => (
     <span className="text-diamond-600">{children}</span>
 );
@@ -19,7 +17,7 @@ const Step = ({ n, className = "", children }: { n: number; className?: string; 
         data-reveal
         className={`flex flex-col gap-3 self-center opacity-15 grayscale motion-reduce:opacity-100 motion-reduce:grayscale-0 sm:gap-5 sm:pr-6 ${className}`}
     >
-        <p className="border-l-2 border-diamond-600/40 pl-3 text-lead text-diamond-900 sm:pl-4">
+        <p className="border-l-2 border-diamond-600/40 pl-3 text-lead text-diamond-900 sm:pl-4 lg:border-l-0 lg:pl-6">
             {children}
         </p>
     </div>
@@ -38,42 +36,71 @@ export default function AboutSection() {
 
         const mm = gsap.matchMedia();
 
-        mm.add("(prefers-reduced-motion: no-preference)", () => {
-            const steps = gsap.utils.toArray<HTMLElement>("[data-reveal]", runway);
+        mm.add(
+            {
+                isDesktop: "(min-width: 1024px)",
+                // isMobile is not read below — it's here because gsap.matchMedia's object
+                // form only invokes the callback when at least ONE query matches
+                // (gsap-core: `anyMatch && matches.push(c)`). Without a complementary
+                // query, a phone with normal motion matched nothing, the callback never
+                // ran, and the steps stayed at their base opacity-15 grayscale forever.
+                isMobile: "(max-width: 1023px)",
+                reduce: "(prefers-reduced-motion: reduce)",
+            },
+            (ctx) => {
+                const { isDesktop, reduce } = ctx.conditions as { isDesktop: boolean; reduce: boolean };
+                if (reduce) return; // lines + text are already fully shown by the motion-reduce: classes
 
-            // One scrubbed timeline across the whole runway. Steps are revealed one
-            // after another and never hidden again, so the text stacks up.
-            const tl = gsap.timeline({
-                defaults: { ease: "none" },
-                scrollTrigger: {
-                    trigger: runway,
-                    start: "top top",     // the sticky stage engages here...
-                    end: "bottom bottom", // ...and lets go here
-                    scrub: 0.6,
-                },
-            });
+                const steps = gsap.utils.toArray<HTMLElement>("[data-reveal]", runway);
+                const lines = gsap.utils.toArray<HTMLElement>("[data-line]", runway);
 
-            steps.forEach((el, i) => {
-                tl.fromTo(
-                    el,
-                    { opacity: 0.15, y: 32, filter: "grayscale(1)" },
-                    { opacity: 1, y: 0, filter: "grayscale(0)", duration: 1 },
-                    i // one timeline unit per step
-                );
-            });
-            tl.to({}, { duration: 0.6 }); // hold: the last line sits fully revealed before release
-        });
+                // One scrubbed timeline across the whole runway.
+                const tl = gsap.timeline({
+                    defaults: { ease: "none" },
+                    scrollTrigger: {
+                        trigger: runway,
+                        start: "top top",     // the sticky stage engages here...
+                        end: "bottom bottom", // ...and lets go here
+                        scrub: 0.6,
+                    },
+                });
+
+                // 1) Grid lines draw top -> bottom (only exists at lg, so only wait for it there)
+                let textStart = 0;
+                if (isDesktop && lines.length) {
+                    tl.fromTo(lines, { height: "0%" }, { height: "100%", duration: 1, stagger: 0.15 }, 0);
+                    textStart = 1.4; // lines finish at 1.15; small breath before the first line of text
+                }
+
+                // 2) Text one by one, and it stays (so it stacks up)
+                steps.forEach((el, i) => {
+                    tl.fromTo(
+                        el,
+                        { opacity: 0.15, y: 32, filter: "grayscale(1)" },
+                        { opacity: 1, y: 0, filter: "grayscale(0)", duration: 1 },
+                        textStart + i
+                    );
+                });
+
+                tl.to({}, { duration: 0.6 }); // hold: the last line sits fully revealed before release
+            }
+        );
 
         return () => mm.revert();
     }, []);
 
     return (
-        // Big empty space above and below the pinned part
         <div id="about-section" className="w-full py-[12vh] motion-reduce:py-20 sm:py-[25vh]">
-            {/* Scroll runway: its height is how long the stage stays stuck. */}
             <div ref={runwayRef} className="relative h-[400vh] motion-reduce:h-auto">
-                {/* Pinned stage via CSS sticky (no ScrollTrigger pin spacers to fight the layout) */}
+
                 <div className="sticky top-0 mx-auto flex h-[var(--stage,100svh)] w-full max-w-7xl flex-col justify-center gap-6 px-4 motion-reduce:static motion-reduce:h-auto sm:gap-10 sm:px-6 lg:grid lg:grid-cols-3 lg:grid-rows-3 lg:gap-0 lg:px-10 lg:py-[12vh]">
+                    <div aria-hidden className="pointer-events-none absolute inset-y-0 left-0 right-0 hidden lg:block lg:px-10">
+                        <div className="relative h-full">
+                            <span data-line className="absolute left-1/3 top-0 h-0 w-px bg-diamond-600/40 motion-reduce:h-full" />
+                            <span data-line className="absolute left-2/3 top-0 h-0 w-px bg-diamond-600/40 motion-reduce:h-full" />
+                        </div>
+                    </div>
+
                     <Step n={1} className="lg:col-start-1 lg:row-start-1">
                         <Hl>rainoutside</Hl> isn&apos;t a brand yet.
                     </Step>
