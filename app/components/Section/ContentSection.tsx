@@ -6,13 +6,20 @@ import LatestProjectSection from "./LatestProjectSection";
 // import ServiceSection from "./ServiceSeection";
 import ContactSection from "./ContactSection";
 import AboutSection from "./AboutSection";
+// import AboutMidSection from  "./AboutMidSection";
+import HistoryPortoSection from "./HistoryPortoSection";
+
+import MotoSection from "./MotoSection";
 // import GameSection from "./GameSection";
 
 const SECTIONS = [
     { id: "banner", label: "Banner", content: <BannerSection /> },
     { id: "about", label: "About", content: <AboutSection /> },
     { id: "projects", label: "Latest Project", content: <LatestProjectSection /> },
+    // { id: "about-mid", label: "About Mid", content: <AboutMidSection /> },
     // { id: "services", label: "Services", content: <ServiceSection /> },
+    { id: "moto", label: "Moto", content: <MotoSection /> },
+    { id: "history", label: "History", content: <HistoryPortoSection /> },
     { id: "contact", label: "Contact", content: <ContactSection /> },
     // { id: "game", label: "Game", content: <GameSection /> },
 ];
