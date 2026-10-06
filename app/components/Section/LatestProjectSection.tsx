@@ -7,6 +7,7 @@ import Snap from "lenis/snap";
 import LatestProjectCard, { type Project } from "../TicketCard";
 import ProjectOverlay from "../ProjectOverlay";
 import projectData from "@/public/data/project_data.json";
+// import VerticalLined from "../VerticalLined";
 
 // Imported, not fetched: the stack measures card 0 on its first frame, so an empty
 // first render would leave it with nothing to size against. JSON widens the `stack`
@@ -294,8 +295,10 @@ export default function LatestProjectSection() {
         <div
             ref={blockRef}
             className="relative"
+            id="latest-project-section"
             style={{ height: `calc(var(--stage) + ${(total - 1) * TRAVEL_VH}vh)` }}
-        >
+            
+        >            
             <div
                 ref={stageRef}
                 style={{ perspective: `${PERSPECTIVE}px` }}
@@ -336,6 +339,7 @@ export default function LatestProjectSection() {
                     reduceMotion={reduceMotion}
                     onJump={scrollToIndex}
                 />
+                {/* <VerticalLined />              */}
 
                 {/* Keyboard/screen-reader route into the carousel — scrolling is the mouse route. */}
                 <div className="sr-only">
