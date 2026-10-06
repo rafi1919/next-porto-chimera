@@ -55,7 +55,7 @@ export default function Badge({
 }: BadgeProps) {
     return (
         <span
-            className={`inline-flex h-fit w-fit items-center whitespace-nowrap rounded-full border bg-linear-to-br px-2 py-px text-[10px] font-medium sm:px-2.5 sm:py-0.5 sm:text-xs ${VARIANTS[variant]} ${className}`}
+            className={`inline-flex h-fit w-fit items-center whitespace-nowrap rounded-full border bg-linear-to-br px-2 py-px text-xs font-bold text-diamond-900 sm:px-2.5 sm:py-0.5 ${VARIANTS[variant]} ${className}`}
         >
             {text}
         </span>
