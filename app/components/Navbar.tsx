@@ -7,7 +7,7 @@ export default function Navbar() {
             <Profile />
 
             <div className="flex justify-end items-center space-x-4 w-40 border-white border-2 rounded-full p-2">
-                <p>1000</p>
+                <p className="font-mono text-label">1000</p>
                 <Image src="/icon/hud-coin.svg" alt="" aria-hidden width={111} height={111} className="size-6 shrink-0" />
             </div>
 
