@@ -1,10 +1,5 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
 @theme {
   --color-diamond-50:  #F0F8F8;
   --color-diamond-100: #D0E7E6;
@@ -21,16 +16,48 @@
   --color-diamond-black: #0B0F22;
 
   --color-background: var(--color-diamond-50);
-  --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+
+  /* HUD eyebrow. 0.75rem is the hard floor — nothing on this site goes below
+     it. 0.2em is above the 0.05–0.1em all-caps guidance on purpose: every label
+     here is 1–3 words, and the air is the HUD. Do not go past 0.2em. */
+  --text-label: 0.75rem;
+  --text-label--line-height: 1.5;
+  --text-label--letter-spacing: 0.2em;
+  --text-label--font-weight: 700;
+
+  /* Big bold statement line: About steps, Contact card value. */
+  --text-lead: clamp(1.25rem, 1rem + 1.1vw, 1.875rem);
+  --text-lead--line-height: 1.25;
+  --text-lead--letter-spacing: -0.02em;
+  --text-lead--font-weight: 700;
+
+  /* The bento's numeric anchor. Its `/total` span is text-[0.4em], which
+     bottoms out at exactly the 12px floor while this stays >= 1.875rem. */
+  --text-readout: clamp(1.875rem, 1.1rem + 3.3vw, 3.75rem);
+  --text-readout--line-height: 0.95;
+  --text-readout--letter-spacing: -0.04em;
+  --text-readout--font-weight: 800;
 }
 
-body {
-  background: var(--color-diamond-50);
-  font-family: Arial, Helvetica, sans-serif;
-}
+@layer base {
+  body {
+    background: var(--color-diamond-50);
+    color: var(--color-diamond-900);
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    line-height: 1.5;
+    font-variant-numeric: tabular-nums;
+  }
 
-.input-field {
-  @apply text-black border border-gray-300 rounded-lg px-4 py-3 bg-zinc-50 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 hover:shadow-md;
+  h1, h2, h3 {
+    font-weight: 700;
+    line-height: 0.95;
+    letter-spacing: -0.04em;
+    text-wrap: balance;
+  }
+  h1 { font-size: clamp(1.875rem, 0.95rem + 4.1vw, 4.5rem); }
+  h2 { font-size: clamp(1.75rem,  1.1rem  + 2.7vw, 3rem);    }
+  h3 { font-size: 1.25rem; }
 }
