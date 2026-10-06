@@ -78,7 +78,7 @@ export default function LatestProjectCard  ({ project, index = 0, total = 1, zoo
                     <span aria-hidden className="absolute bottom-4 right-4 size-4 border-b-2 border-r-2 border-diamond-100/70" />
 
                     {/* Meta strip */}
-                    <div className="absolute inset-x-0 bottom-0 flex items-end justify-between p-4 font-mono text-[9px] uppercase tracking-[0.2em] text-diamond-100 sm:p-8 sm:text-[11px] sm:tracking-[0.25em]">
+                    <div className="absolute inset-x-0 bottom-0 flex items-end justify-between p-4 font-mono text-label uppercase text-diamond-100 sm:p-8">
                         <span>PRJ-{pad(project.id)}</span>
                         <span className="flex items-center gap-2">
                             <span aria-hidden className="size-1.5 bg-diamond-400 motion-safe:animate-pulse" />
@@ -92,7 +92,7 @@ export default function LatestProjectCard  ({ project, index = 0, total = 1, zoo
 
                 {/* Stub */}
                 <aside className="flex w-(--stub) shrink-0 flex-col items-center justify-between gap-2 px-2 py-4 text-diamond-100 sm:gap-3 sm:px-3 sm:py-6">
-                    <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-diamond-100/60">No.</span>
+                    <span className="font-mono text-label uppercase text-diamond-100/80">No.</span>
 
                     <AnimatePresence mode="wait" initial={false}>
                         <motion.p
@@ -101,7 +101,7 @@ export default function LatestProjectCard  ({ project, index = 0, total = 1, zoo
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0 }}
                             transition={transition}
-                            className="rotate-180 font-mono text-4xl font-extrabold tabular-nums sm:text-6xl [writing-mode:vertical-rl]"
+                            className="rotate-180 font-mono text-readout [writing-mode:vertical-rl]"
                         >
                             {pad(project.id)}
                         </motion.p>
