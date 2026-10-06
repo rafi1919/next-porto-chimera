@@ -17,7 +17,7 @@ export function ConfirmDeleteDialog({
 }: ConfirmDeleteDialogProps) {
     return (
         <Dialog isOpen={isOpen} onClose={onCancel}>
-            <h2 className="text-lg font-semibold text-white mb-2">{title}</h2>
+            <h2 className="text-lead text-white mb-2">{title}</h2>
             <p className="text-zinc-400 text-sm mb-6">{message}</p>
             <div className="flex gap-3 justify-end">
                 <button
