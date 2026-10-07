@@ -47,9 +47,13 @@ export default function HistoryPortoSection() {
             {
                 full: "(prefers-reduced-motion: no-preference)",
                 reduced: "(prefers-reduced-motion: reduce)",
+                // Matches the md: breakpoint. Crossing it re-runs this callback, which
+                // reverts the old splits and rebuilds for the layout that's now on screen.
+                isDesktop: "(min-width: 768px)",
             },
             (ctx) => {
                 const reduced = !!ctx.conditions?.reduced;
+                const isDesktop = !!ctx.conditions?.isDesktop;
 
                 const slides = gsap.utils.toArray<HTMLElement>("[data-slide]", runway);
                 const shots = gsap.utils.toArray<HTMLElement>("[data-shot]", runway);
@@ -73,7 +77,10 @@ export default function HistoryPortoSection() {
                             },
                         })
                     );
-                const groups = [split(titles), split(descs)];
+                // Phones get no desc group: that layer is display:none there, and SplitText
+                // measures line boxes — splitting a hidden element yields zero-height lines
+                // that stay broken once it becomes visible again.
+                const groups = isDesktop ? [split(titles), split(descs)] : [split(titles)];
 
                 // Old lines leave upward, new lines rise from below (reversed when scrolling back up).
                 const show = (next: number) => {
@@ -140,7 +147,7 @@ export default function HistoryPortoSection() {
             {/* --img = image size, --pitch = distance between image centers */}
             <div
                 ref={runwayRef}
-                className="relative mt-12 text-diamond-50 [--img:38svh] md:[--img:43svh] [--pitch:calc(var(--img)_+_12svh)]"
+                className="relative mt-12 text-diamond-50 [--img:45vw] md:[--img:43svh] [--pitch:calc(var(--img)_+_12svh)]"
             >
                 {/* STICKY LAYER: title left, desc right, counter. The slides column below
                     pulls itself up over this with -mt, rather than this pushing down with
@@ -168,7 +175,7 @@ export default function HistoryPortoSection() {
 
                         <div className="hidden w-(--img) md:block" aria-hidden />
 
-                        <div className="relative h-40 md:h-56">
+                        <div className="relative hidden md:block md:h-56">
                             {HISTORY.map(({ desc, img }) => (
                                 <p
                                     key={img}
@@ -181,21 +188,21 @@ export default function HistoryPortoSection() {
                         </div>
                     </div>
 
-                    <p className="absolute right-4 top-10 text-2xl font-bold md:bottom-10 md:right-10 md:top-auto lg:right-10 lg:text-4xl">
+                    <p className="absolute right-4 top-10 hidden text-2xl font-bold md:bottom-10 md:right-10 md:top-auto md:block lg:right-10 lg:text-4xl">
                         <span data-count>1</span>/{N}
                     </p>
                 </div>
 
                 {/* CENTER COLUMN: normal, real scroll. Padding lets first/last image reach the center. */}
                 <div className="-mt-[100svh] flex flex-col items-center py-[calc(50svh_-_var(--pitch)/2)]">
-                    {HISTORY.map(({ date, img, url }) => {
+                    {HISTORY.map(({ date, img, url, desc }) => {
                         const live = url !== "#";
                         const shot = (
                             <Image
                                 src={img}
                                 alt={`The ${date} portfolio`}
                                 fill
-                                sizes="(min-width: 768px) 25vw, 60vw"
+                                sizes="(min-width: 768px) 25vw, 80vw"
                                 className="border border-diamond-50/15 object-cover"
                             />
                         );
@@ -204,7 +211,7 @@ export default function HistoryPortoSection() {
                             <div
                                 key={img}
                                 data-slide
-                                className="flex h-(--pitch) w-full items-center justify-center"
+                                className="flex w-full flex-col items-center justify-center gap-5 py-8 md:h-(--pitch) md:gap-0 md:py-0"
                             >
                                 <div
                                     data-shot
@@ -223,6 +230,9 @@ export default function HistoryPortoSection() {
                                         shot
                                     )}
                                 </div>
+                                <p className="w-[80vw] text-sm text-diamond-100/80 md:hidden">
+                                    {desc}
+                                </p>
                             </div>
                         );
                     })}
