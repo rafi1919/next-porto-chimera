@@ -1,0 +1,20 @@
+[
+    {
+        "date": "2022",
+        "img": "/project/porto1.webp",
+        "url": "https://portofolio-chi-three.vercel.app/",
+        "desc": "Where it started. My first portfolio, built mostly to learn the basics and get something live under my own name. I use this to get an internship at my campus"
+    },
+    {
+        "date": "2024",
+        "img": "/project/porto2.webp",
+        "url": "https://react-porto-future.vercel.app/",
+        "desc": "The React rebuild, aiming at a future/urban look and my first real attempt at motion on the web. Use this to get a job at my first company, eventually i got an offer from them. "
+    },
+    {
+        "date": "2026",
+        "img": "/project/porto3.webp",
+        "url": "#",
+        "desc": "Where you are now. Currently the AI is running the world. Kinda sad since not much job left for us. Yet i learned a lot from my current company with AI as tools. Becoming a better engineer and designer. I hope this portfolio can be a good showcase of my skills and experience."
+    }
+]
