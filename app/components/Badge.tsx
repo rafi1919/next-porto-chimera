@@ -38,9 +38,17 @@ const VARIANTS = {
 
     zinc:
         "from-zinc-100 via-slate-200 to-zinc-300",
+
+    // The odd one out: every other variant is a pale gradient read with dark ink.
+    // This one is the fallback for an unrecognised stack key, so it inverts.
+    black:
+        "from-diamond-950 via-diamond-black to-diamond-950",
 }  as const;
 
 export type BadgeVariant = keyof typeof VARIANTS;
+
+// Which variants need light ink. A set beats adding a flag to all thirteen.
+const INVERTED = new Set<BadgeVariant>(["black"]);
 
 interface BadgeProps {
     text: string;
@@ -53,9 +61,13 @@ export default function Badge({
     variant = "diamond",
     className = "",
 }: BadgeProps) {
+    // Ink is never inherited: every variant is a fixed gradient, so leaving the colour
+    // to the parent is how these ended up near-white on cyan-100 inside ProjectOverlay.
+    const ink = INVERTED.has(variant) ? "text-diamond-50" : "text-diamond-900";
+
     return (
         <span
-            className={`inline-flex h-fit w-fit items-center whitespace-nowrap rounded-full border bg-linear-to-br px-2 py-px text-xs font-bold text-diamond-900 sm:px-2.5 sm:py-0.5 ${VARIANTS[variant]} ${className}`}
+            className={`inline-flex h-fit w-fit items-center whitespace-nowrap rounded-full border bg-linear-to-br px-2 py-px text-xs font-bold sm:px-2.5 sm:py-0.5 ${ink} ${VARIANTS[variant]} ${className}`}
         >
             {text}
         </span>
