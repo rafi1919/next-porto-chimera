@@ -80,7 +80,7 @@ export default function BannerSection() {
                     768px. 10.5cqi is ~96% of the container at every width.
                     A <p>, not a heading: this is the logotype, not a section label — the
                     h1 above already owns this section. */}
-                <p className="flex text-[clamp(2rem,10.5cqi,6rem)] font-bold text-diamond-black">
+                <p className="flex items-end gap-3 text-[clamp(2rem,10.5cqi,6rem)] font-bold text-diamond-black">
                     RAINOUTSIDE
                     {/* `em` inherits the wordmark's font-size, which is now container-driven,
                         so the globe tracks the text with no breakpoints to fall out of sync. */}
@@ -91,7 +91,7 @@ export default function BannerSection() {
                         aria-hidden
                         width={291}
                         height={140}
-                        className="inline-block h-[0.75em] w-auto align-baseline ml-auto"
+                        className="inline-block h-[0.75em] w-auto ml-auto self-center"
                     />
                 </p>
             </div>
