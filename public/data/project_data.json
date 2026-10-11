@@ -3,7 +3,7 @@
         "id": 1,
         "name": "Cavos",
         "description": "AI call operations for APAC contact centres — outbound campaigns, real-time QA auditing, and agent coaching across Indonesian, Malay, and English.",
-        "stack": ["nextjs", "typescript", "tailwind", "laravel"],
+        "stack": ["react", "typescript", "tailwind", "go"],
         "image": "/project/cavos.webp",
         "href": "https://cavos.io/"
     },
@@ -19,7 +19,7 @@
         "id": 3,
         "name": "Sarga News",
         "description": "Indonesia's horse racing portal — race coverage, jockeys, and equestrian sport, from dressage to the odd motorsport detour.",
-        "stack": ["laravel", "php", "tailwind"],
+        "stack": ["angular", "php", "tailwind"],
         "image": "/project/sarga.webp",
         "href": "https://news.sarga.co/id"
     },
@@ -27,8 +27,96 @@
         "id": 4,
         "name": "Bolong",
         "description": "An Indonesian news portal on everything China — business, technology, culture, and the diplomacy between the two countries.",
-        "stack": ["laravel", "php", "tailwind"],
+        "stack": ["angular", "php", "tailwind"],
         "image": "/project/bolong.webp",
         "href": "https://bolong.id/"
+    },
+    {
+        "id": 5,
+        "name": "Sarga Games",
+        "description": "Horse racing prediction game for Indonesian racecourses — pick your runners, follow upcoming meets, and compete for prizes.",
+        "stack": ["vue", "typescript", "tailwind"],
+        "image": "/project/sarga-games.webp",
+        "href": "https://game.sarga.co/"
+    },
+    {
+        "id": 6,
+        "name": "Pekalen Rafting",
+        "description": "Affiliate and agent programme for a whitewater rafting operator in Probolinggo — sign-up, tiered commissions, and partner recruitment.",
+        "stack": ["nextjs", "php", "tailwind"],
+        "image": "/project/pekalen.webp",
+        "href": "https://pekalen.venturo.pro/"
+    },
+    {
+        "id": 7,
+        "name": "PPID Bio Farma",
+        "description": "Public information portal for Bio Farma, Indonesia's state-owned vaccine maker — online document requests and disclosures under the public information law.",
+        "stack": ["nextjs", "typescript", "tailwind"],
+        "image": "/project/ppid.webp",
+        "href": "https://ppid.biofarma.co.id/id"
+    }, 
+    {
+        "id": 8,
+        "name": "Cavos Docs",
+        "description": "Technical documentation for Cavos — implementation guides and reference for its AI call operations and QA platform.",
+        "stack": ["react", "typescript", "tailwind"],
+        "image": "/Image-not-found.webp",
+        "href": "https://docs.cavos.io/overview"
+    },
+    {
+        "id": 9,
+        "name": "Shipper Shopify Plugin",
+        "description": "Shipper's logistics plugin for Shopify — live rates across JNE, J&T, SiCepat and Ninja Xpress, shipment creation, waybill generation, and tracking without leaving the dashboard.",
+        "stack": ["nuxt", "typescript", "node"],
+        "image": "/project/shipper.webp",
+        "href": "https://shipper.id/blog/eng/logistic/shipper-plugin-now-available-on-shopify-smarter-shipping-for-your-store/"
+    },
+    {
+        "id": 10,
+        "name": "TelusuRI",
+        "description": "Indonesian travel and tourism media — destination features, trip writing, and guides for exploring the archipelago.",
+        "stack": ["php", "tailwind", "wordpress"],
+        "image": "/project/telusuri.webp",
+        "href": "https://telusuri.id/"
+    },
+    {
+        "id": 11,
+        "name": "Monash Admin",
+        "description": "Internal admin dashboard behind an authenticated login — content and record management for the Monash project.",
+        "stack": ["react", "laravel", "tailwind"],
+        "image": "/project/monash.webp",
+        "href": "https://monash.venturo.pro/login"
+    },
+    {
+        "id": 12,
+        "name": "Sarga Games CMS",
+        "description": "Admin behind the racing game — race meets, runners, and prize events, plus the results that settle each round.",
+        "stack": ["vue", "typescript", "tailwind"],
+        "image": "/project/sarga-games.webp",
+        "href": ""
+    },
+    {
+        "id": 13,
+        "name": "Sarga News CMS",
+        "description": "Editorial back office for the racing portal — writing and scheduling race coverage, jockey profiles, and equestrian features.",
+        "stack": ["angular", "php", "tailwind"],
+        "image": "/project/sarga-news.webp",
+        "href": ""
+    },
+    {
+        "id": 14,
+        "name": "Bolong CMS",
+        "description": "Editorial back office for the China desk — article workflow, categories, and publishing for the newsroom.",
+        "stack": ["angular", "php", "tailwind"],
+        "image": "/project/bolong-cms.webp",
+        "href": ""
+    },
+    {
+        "id": 15,
+        "name": "Kejaksaan Story",
+        "description": "News portal for Indonesia's Attorney General's Office — case updates, prosecutions, and institutional programmes, published by Puspenkum Kejagung.",
+        "stack": ["nextjs", "typescript", "tailwind"],
+        "image": "/project/kejaksaan.webp",
+        "href": "https://story.kejaksaan.go.id/"
     }
 ]
