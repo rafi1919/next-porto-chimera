@@ -10,8 +10,11 @@ const PROJECTS = projectData as Project[];
 /* ── tweakables ─────────────────────────────────────────────────────────────
    Design px, scaled to the screen by `s`. CARD_W is the width we give the
    ticket; CARD_H has to match what TicketCard actually renders, see cardH(). */
-const CARD_W = 440;
-const GAP = 72;
+const cardW = () =>
+    window.innerWidth >= 768
+        ? Math.min(window.innerWidth * 0.78, 832)
+        : 440;
+const GAP = 120;
 /* Degrees, same on every card. Written as rotateX→rotateY→rotateZ, which CSS
    applies right-to-left: Z spins the card in its own plane first, then Y yaws it,
    then X lays it back. What each one buys you:
@@ -31,7 +34,6 @@ const THROW = 160;   // inertia multiplier on release
 const WHEEL = 1;
 const LEAN = 0.25;   // how much the tilt leans into the drag
 const LEAN_MAX = 12; // degrees
-const DIM = 0.45;    // opacity of the cards that aren't hovered
 /* ──────────────────────────────────────────────────────────────────────── */
 
 /** TicketCard sizes itself with h-64 sm:h-88 md:h-100, and those are viewport
@@ -81,8 +83,8 @@ export default function Page() {
 
             v.W = window.innerWidth;
             v.H = window.innerHeight;
-            v.s = Math.max(0.6, Math.min(v.W / 1600, 1.25));
-            v.cellW = (CARD_W + GAP) * v.s;
+            v.s = Math.max(0.6, Math.min(v.W / 1600, 1));
+            v.cellW = (cardW() + GAP) * v.s;
             v.cellH = (cardH() + GAP) * v.s;
 
             // +2 of slack so a card is always waiting just off each edge.
@@ -142,7 +144,7 @@ export default function Page() {
             const dx = px - p.x, dy = py - p.y;
             const lx = dx * cz + dy * sz;   // undo the in-plane spin
             const ly = -dx * sz + dy * cz;
-            return Math.abs(lx) < (CARD_W * s) / 2 && Math.abs(ly) < (cardH() * s * fore) / 2;
+            return Math.abs(lx) < (cardW() * s) / 2 && Math.abs(ly) < (cardH() * s * fore) / 2;
         };
         /** Nearest card under a point, or null. Nearest, not first-match: the boxes
             overlap, so pool order picks an arbitrary one. */
@@ -341,7 +343,7 @@ export default function Page() {
                     <div
                         key={i}
                         ref={(el) => { cellRefs.current[i] = el; }}
-                        style={{ width: CARD_W }}
+                        style={{ width: cardW() }}
                         className="absolute left-0 top-0 origin-center will-change-transform"
                     >
                         <LatestProjectCard
