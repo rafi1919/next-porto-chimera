@@ -12,7 +12,7 @@ import projectData from "@/public/data/project_data.json";
 // Imported, not fetched: the stack measures card 0 on its first frame, so an empty
 // first render would leave it with nothing to size against. JSON widens the `stack`
 // strings to plain string[], hence the cast — a typo there won't be caught.
-const PROJECTS = projectData as Project[];
+const PROJECTS = projectData.slice(0, 3) as Project[];
 
 const pad = (n: number) => String(n).padStart(2, "0");
 
