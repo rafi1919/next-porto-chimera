@@ -5,14 +5,17 @@ import gsap from "gsap";
 import { useLenis } from "lenis/react";
 import Snap from "lenis/snap";
 import LatestProjectCard, { type Project } from "../TicketCard";
+import MoreProjectsCard from "../MoreProjectsCard";
 import ProjectOverlay from "../ProjectOverlay";
 import projectData from "@/public/data/project_data.json";
-// import VerticalLined from "../VerticalLined";
 
 // Imported, not fetched: the stack measures card 0 on its first frame, so an empty
 // first render would leave it with nothing to size against. JSON widens the `stack`
 // strings to plain string[], hence the cast — a typo there won't be caught.
 const PROJECTS = projectData.slice(0, 3) as Project[];
+
+/** Where the closing "view more projects" card sends you. */
+const MORE_HREF = "/project";
 
 const pad = (n: number) => String(n).padStart(2, "0");
 
@@ -59,7 +62,11 @@ export default function LatestProjectSection() {
     const lenis = useLenis();
 
     const total = PROJECTS.length;
-    const project = PROJECTS[index];
+    // One slot past the last project: the "view more" card. Everything that deals
+    // cards (progress, snap stops, travel) counts slots; the info panel counts projects.
+    const slots = total + 1;
+    const isMore = index >= total;
+    const project = PROJECTS[Math.min(index, total - 1)];
     const transition: Transition = { duration: 0.35, ease: "easeOut" };
     const zoom = reduceMotion ? 1 : 1.06;
 
@@ -71,7 +78,7 @@ export default function LatestProjectSection() {
         const top =
             block.getBoundingClientRect().top +
             window.scrollY +
-            (i / Math.max(1, total - 1)) * travel;
+            (i / Math.max(1, slots - 1)) * travel;
         // Lenis owns window scroll; a native scrollTo would fight it.
         if (lenis) lenis.scrollTo(top);
         else window.scrollTo({ top, behavior: "smooth" });
@@ -88,7 +95,7 @@ export default function LatestProjectSection() {
 
         /** Scroll distance over which the stage stays pinned. */
         const travel = () => block.offsetHeight - stage.offsetHeight;
-        const step = () => travel() / Math.max(1, total - 1);
+        const step = () => travel() / Math.max(1, slots - 1);
         /** Document-space top of the block; offsetTop would be relative to the nearest
             positioned ancestor, which isn't the document here. */
         const docTop = () => block.getBoundingClientRect().top + window.scrollY;
@@ -98,9 +105,9 @@ export default function LatestProjectSection() {
             const t = travel();
             if (t <= 0) return 0;
             const p = -block.getBoundingClientRect().top / t;
-            return Math.min(1, Math.max(0, p)) * (total - 1);
+            return Math.min(1, Math.max(0, p)) * (slots - 1);
         };
-        const slot = () => Math.min(total - 1, Math.max(0, Math.round(stack.at)));
+        const slot = () => Math.min(slots - 1, Math.max(0, Math.round(stack.at)));
 
         // Pointer drag on the centred card, in screen px from where the grab started.
         // gsap springs it back to 0 on release.
@@ -113,6 +120,9 @@ export default function LatestProjectSection() {
             // ponytail: mouse and pen only. On a phone the card covers most of the stage,
             // so claiming the gesture would leave no room to scroll the carousel at all.
             if (e.pointerType === "touch") return;
+            // The "view more" card is a link: capturing the pointer would redirect the
+            // click to the stage and swallow it.
+            if (slot() >= total) return;
             const el = cardRefs.current[slot()];
             if (!el || !(e.target instanceof Node) || !el.contains(e.target)) return;
             dragging = true;
@@ -142,7 +152,7 @@ export default function LatestProjectSection() {
         // Snap now hangs off the page's Lenis, so "mandatory" would drag the whole
         // document onto these stops. Proximity at just over half a step behaves as
         // mandatory inside the block and lets go at both ends, which is what releases
-        // you into the next section instead of pinning you to card 20.
+        // you into the next section instead of pinning you to the last card.
         const snap = lenis && !reduceMotion
             ? new Snap(lenis, {
                   type: "proximity",
@@ -158,7 +168,7 @@ export default function LatestProjectSection() {
             // Off screen, the stops come out entirely — the rest of the page scrolls free.
             if (!snap || !running || travel() <= 0) return;
             const top = docTop();
-            clearSnaps = PROJECTS.map((_, i) => snap.add(top + i * step()));
+            clearSnaps = Array.from({ length: slots }, (_, i) => snap.add(top + i * step()));
         };
 
         // ponytail: reduced motion has no Lenis snap, so snap on the browser's own
@@ -167,7 +177,7 @@ export default function LatestProjectSection() {
             if (!running || travel() <= 0) return;
             const top = docTop();
             const i = Math.round((window.scrollY - top) / step());
-            if (i < 0 || i > total - 1) return; // past either end: leave the page alone
+            if (i < 0 || i > slots - 1) return; // past either end: leave the page alone
             window.scrollTo({ top: top + i * step() });
         };
         if (!snap) window.addEventListener("scrollend", onScrollEnd);
@@ -207,9 +217,17 @@ export default function LatestProjectSection() {
             const perspPx = `${persp}px`;
             if (stage.style.perspective !== perspPx) stage.style.perspective = perspPx;
 
-            for (let i = 0; i < total; i++) {
+            for (let i = 0; i < slots; i++) {
                 const el = cardRefs.current[i];
                 if (!el) continue;
+
+                // The "view more" card has no content of its own to size it, so it
+                // borrows the first project card's height.
+                if (i === total) {
+                    const hPx = `${h}px`;
+                    if (el.style.height !== hPx) el.style.height = hPx;
+                }
+
                 const d = i - current;
                 const a = Math.abs(d);
                 const dir = Math.sign(d);
@@ -239,7 +257,7 @@ export default function LatestProjectSection() {
                 // `transform` and the `translate` property compose in a version-dependent order.
                 el.style.transform = `translate(-50%, -50%) translate3d(${x}px, ${y}px, ${z}px) rotateX(${tiltX}deg) rotateY(${tiltY}deg)`;
                 el.style.visibility = a > CULL ? "hidden" : "visible";
-                el.style.zIndex = String(total - Math.round(a));
+                el.style.zIndex = String(slots - Math.round(a));
             }
 
             const next = slot();
@@ -287,7 +305,7 @@ export default function LatestProjectSection() {
             clearSnaps.forEach((remove) => remove());
             snap?.destroy();
         };
-    }, [lenis, reduceMotion, total]);
+    }, [lenis, reduceMotion, total, slots]);
 
     return (
         // The block is one viewport plus the travel it takes to deal all the cards; the
@@ -296,9 +314,8 @@ export default function LatestProjectSection() {
             ref={blockRef}
             className="relative"
             id="latest-project-section"
-            style={{ height: `calc(var(--stage) + ${(total - 1) * TRAVEL_VH}vh)` }}
-            
-        >            
+            style={{ height: `calc(var(--stage) + ${(slots - 1) * TRAVEL_VH}vh)` }}
+        >
             <div
                 ref={stageRef}
                 style={{ perspective: `${PERSPECTIVE}px` }}
@@ -329,12 +346,25 @@ export default function LatestProjectSection() {
                             />
                         </div>
                     ))}
+
+                    {/* Closing card: a real link, so no aria-hidden. Not draggable (see
+                        onPointerDown) and out of the tab order until it's centred. */}
+                    <div
+                        ref={(el) => { cardRefs.current[total] = el; }}
+                        className={`invisible absolute left-1/2 top-1/2 w-[min(78vw,52rem)] will-change-transform ${
+                            isMore ? "pointer-events-auto" : "pointer-events-none"
+                        }`}
+                    >
+                        <MoreProjectsCard href={MORE_HREF} count={total} focusable={isMore} />
+                    </div>
                 </div>
 
                 <ProjectOverlay
                     project={project}
                     index={index}
                     total={total}
+                    tickCount={slots}
+                    hidePanel={isMore}
                     transition={transition}
                     reduceMotion={reduceMotion}
                     onJump={scrollToIndex}
@@ -348,6 +378,7 @@ export default function LatestProjectSection() {
                             Jump to project {pad(i + 1)}: {item.name}
                         </button>
                     ))}
+                    <a href={MORE_HREF}>View more projects</a>
                 </div>
             </div>
         </div>
