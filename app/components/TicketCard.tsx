@@ -80,10 +80,13 @@ export default function LatestProjectCard  ({ project, index = 0, total = 1, zoo
                     {/* Meta strip */}
                     <div className="absolute inset-x-0 bottom-0 flex items-end justify-between p-4 font-mono text-label uppercase text-diamond-100 sm:p-8">
                         <span>PRJ-{pad(project.id)}</span>
-                        <span className="flex items-center gap-2">
-                            <span aria-hidden className="size-1.5 bg-diamond-400 motion-safe:animate-pulse" />
-                            Preview
+                        <span className="max-w-[55%] text-right font-sans text-[0.625rem] font-medium normal-case tracking-[0.16em] text-diamond-100/90">
+                            {project.name}
                         </span>
+                    </div>
+
+                    <div className="absolute right-4 top-4 font-mono text-label uppercase tracking-[0.2em] text-diamond-100/80 sm:right-8 sm:top-8">
+                        Preview
                     </div>
                 </div>
 
