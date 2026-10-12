@@ -85,7 +85,7 @@
         "description": "Internal admin dashboard behind an authenticated login — content and record management for the Monash project.",
         "stack": ["react", "laravel", "tailwind"],
         "image": "/project/monash.webp",
-        "href": "https://monash.venturo.pro/login"
+        "href": ""
     },
     {
         "id": 12,
