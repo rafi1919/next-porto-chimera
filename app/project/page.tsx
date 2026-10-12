@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import Link from "next/link";
 import LatestProjectCard, { type Project } from "../components/TicketCard";
+import ProjectDetailCard from "../components/ProjectDetailCard";
 import { Arrow } from "../components/Arrow";
 import projectData from "@/public/data/project_data.json";
 
@@ -16,7 +17,12 @@ const cardW = () =>
     window.innerWidth >= 768
         ? Math.min(window.innerWidth * 0.78, 832)
         : 440;
-const GAP = 120;
+/* Dead space around every card, design px. Sized to leave room for a detail card
+   in the gutter beside each ticket — the cell is (card + GAP), so this is the
+   whole whitespace budget between two neighbours.
+   ponytail: one value for both axes. Split into GAP_X / GAP_Y in measure() if the
+   detail card only ever sits on one side and the other axis starts looking empty. */
+const GAP = 320;
 /* Degrees, same on every card. Written as rotateX→rotateY→rotateZ, which CSS
    applies right-to-left: Z spins the card in its own plane first, then Y yaws it,
    then X lays it back. What each one buys you:
@@ -64,6 +70,8 @@ export default function Page() {
     const cellRefs = useRef<(HTMLDivElement | null)[]>([]);
     // nx/ny drive how many cards React renders; deck maps each slot to a project.
     const [grid, setGrid] = useState<{ nx: number; ny: number; deck: number[] } | null>(null);
+    // Index into PROJECTS of the card the camera has settled on; drives the detail panel.
+    const [shown, setShown] = useState<number | null>(null);
 
     // Everything the ticker reads, kept off React so a frame never triggers a render.
     const view = useRef({ W: 0, H: 0, s: 1, cellW: 1, cellH: 1, nx: 0, ny: 0, Tx: 1, Ty: 1 });
@@ -134,6 +142,7 @@ export default function Page() {
         let mx: number | null = null, my: number | null = null;
         let dragging = false;
         let prevX = 0, prevY = 0, dvx = 0, dvy = 0;
+        let parked = -1; // slot the detail panel is currently reporting
 
         /* Hit test in the card's OWN frame. An axis-aligned CARD_W x cardH box is wrong
            twice over: rotateZ turns the card in the plane, and rotateX foreshortens its
@@ -195,8 +204,12 @@ export default function Page() {
             const tz = TILT.z + clamp(-LEAN_MAX, LEAN_MAX, dvx * LEAN * lean);
             const tx = TILT.x + clamp(-LEAN_MAX, LEAN_MAX, -dvy * LEAN * lean);
 
+            let mid = -1, midD = Infinity;
+
             for (let i = 0; i < slots.current.length; i++) {
                 const p = slots.current[i];
+                const d = (p.x - v.W / 2) ** 2 + (p.y - v.H / 2) ** 2;
+                if (d < midD) { midD = d; mid = i; }
                 const el = cellRefs.current[i];
                 if (!el) continue;
                 p.h += ((p === hover ? 1 : 0) - p.h) * 0.15; // smoothed 0..1 hover
@@ -207,6 +220,13 @@ export default function Page() {
                     `scale(${v.s * (1 + 0.08 * p.h)})`;
                 el.style.zIndex = p === hover ? "10" : "1";
             }
+
+            /* The panel follows whatever is parked in the middle. Tap-to-centre, the
+               drag snap and the arrow keys all finish by parking a card there, so this
+               one check covers every input instead of a hook per handler. Gated on the
+               camera having arrived: mid-flight the nearest card changes every frame. */
+            const settled = !dragging && Math.abs(c.tx - c.x) < 0.5 && Math.abs(c.ty - c.y) < 0.5;
+            if (settled && mid !== parked) { parked = mid; setShown(grid.deck[mid]); }
         };
 
         gsap.ticker.add(render);
@@ -373,7 +393,9 @@ export default function Page() {
                 Back
             </Link>
 
-            <p className="pointer-events-none absolute bottom-6 right-6 z-10 font-mono text-label uppercase text-diamond-100/80">
+            <ProjectDetailCard project={shown === null ? null : PROJECTS[shown]} total={PROJECTS.length} />
+
+            <p className="pointer-events-none absolute right-6 top-6 z-10 font-mono text-label uppercase text-diamond-100/80 sm:bottom-6 sm:top-auto">
                 Drag anywhere
             </p>
 
