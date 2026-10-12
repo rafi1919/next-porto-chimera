@@ -2,7 +2,9 @@
 
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
+import Link from "next/link";
 import LatestProjectCard, { type Project } from "../components/TicketCard";
+import { Arrow } from "../components/Arrow";
 import projectData from "@/public/data/project_data.json";
 
 const PROJECTS = projectData as Project[];
@@ -362,6 +364,14 @@ export default function Page() {
                 aria-hidden
                 className="pointer-events-none absolute inset-0 z-5 bg-[radial-gradient(ellipse_at_center,transparent_55%,rgb(0_0_0/0.45))]"
             />
+
+            <Link
+                href="/"
+                className="group absolute left-6 top-6 z-10 flex items-center gap-2 font-mono text-label uppercase text-diamond-100/80 transition-colors hover:text-diamond-50"
+            >
+                <Arrow className="size-4 rotate-180 transition-transform motion-safe:group-hover:-translate-x-1" />
+                Back
+            </Link>
 
             <p className="pointer-events-none absolute bottom-6 right-6 z-10 font-mono text-label uppercase text-diamond-100/80">
                 Drag anywhere
